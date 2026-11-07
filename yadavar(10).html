@@ -1,0 +1,2713 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b1424">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="یادآور شمسی">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b1424'/%3E%3Ctext x='32' y='44' font-size='34' text-anchor='middle'%3E%E2%8F%B0%3C/text%3E%3C/svg%3E">
+<title>یادآور شمسی</title>
+<style>
+  :root{
+    --bg:#0b1020; --bg2:#111a33; --card:rgba(255,255,255,.055); --card2:rgba(255,255,255,.09);
+    --line:rgba(255,255,255,.12); --txt:#eef2ff; --dim:#9aa6c8; --acc:#4ade80; --acc2:#38bdf8;
+    --warn:#fbbf24; --danger:#fb7185; --r:18px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:"Vazirmatn","IRANSans","Segoe UI",Tahoma,system-ui,sans-serif;
+    background:
+      radial-gradient(1100px 600px at 88% -12%,rgba(56,189,248,.20),transparent 60%),
+      radial-gradient(900px 520px at 6% 0%,rgba(74,222,128,.16),transparent 55%),
+      linear-gradient(180deg,var(--bg),var(--bg2) 70%,#0a0f1e);
+    color:var(--txt); min-height:100vh; line-height:1.7; padding:18px 14px 90px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1180px;margin:0 auto}
+  h1,h2,h3{margin:0;font-weight:800;letter-spacing:-.2px}
+  .mono{font-variant-numeric:tabular-nums}
+  button{font-family:inherit;cursor:pointer}
+
+  /* ---------- header ---------- */
+  header{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;margin-bottom:18px}
+  .brand{display:flex;gap:13px;align-items:center}
+  .logo{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;font-size:26px;
+    background:linear-gradient(140deg,rgba(74,222,128,.22),rgba(56,189,248,.22));border:1px solid var(--line);
+    box-shadow:0 10px 30px -12px rgba(56,189,248,.7)}
+  .brand h1{font-size:21px}
+  .brand p{margin:2px 0 0;font-size:12.5px;color:var(--dim)}
+  .chips{display:flex;gap:8px;flex-wrap:wrap}
+  .chip{background:var(--card);border:1px solid var(--line);color:var(--txt);border-radius:999px;
+    padding:7px 13px;font-size:12.5px;display:inline-flex;gap:7px;align-items:center;transition:.18s}
+  .chip:hover{background:var(--card2)}
+  .chip.ok{border-color:rgba(74,222,128,.45);color:#c7f9d8}
+  .chip.bad{border-color:rgba(251,191,36,.45);color:#ffe6a8}
+  .dot{width:7px;height:7px;border-radius:50%;background:currentColor;box-shadow:0 0 8px currentColor}
+
+  /* ---------- layout ---------- */
+  .grid{display:grid;grid-template-columns:1.05fr 1fr;gap:16px;align-items:start}
+  @media (max-width:940px){ .grid{grid-template-columns:1fr} }
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px;
+    backdrop-filter:blur(12px);box-shadow:0 22px 60px -40px rgba(0,0,0,.9)}
+  .card h2{font-size:15px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+  .card h2 .mini{font-size:11.5px;color:var(--dim);font-weight:500}
+
+  label.f{display:block;font-size:12.5px;color:var(--dim);margin:10px 0 5px}
+  input[type=text],input[type=email],input[type=number],input[type=password],select,textarea{
+    width:100%;background:rgba(0,0,0,.28);border:1px solid var(--line);border-radius:12px;
+    color:var(--txt);padding:10px 12px;font-family:inherit;font-size:14px;outline:none;transition:.16s}
+  input:focus,select:focus,textarea:focus{border-color:rgba(56,189,248,.7);box-shadow:0 0 0 3px rgba(56,189,248,.13)}
+  textarea{resize:vertical;min-height:54px}
+  select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--dim) 50%),linear-gradient(135deg,var(--dim) 50%,transparent 50%);
+    background-position:calc(0% + 14px) calc(50% + 1px),calc(0% + 19px) calc(50% + 1px);background-size:5px 5px,5px 5px;background-repeat:no-repeat}
+  .row{display:flex;gap:10px}
+  .row>*{flex:1}
+  .btn{border-radius:12px;padding:11px 16px;font-size:13.5px;font-weight:700;border:1px solid var(--line);
+    background:var(--card2);color:var(--txt);transition:.18s;display:inline-flex;gap:8px;align-items:center;justify-content:center}
+  .btn:hover{transform:translateY(-1px);background:rgba(255,255,255,.14)}
+  .btn.primary{background:linear-gradient(135deg,#34d399,#22b8e6);border:0;color:#04211a;box-shadow:0 14px 34px -16px rgba(52,211,153,.9)}
+  .btn.ghost{background:transparent}
+  .btn.sm{padding:7px 11px;font-size:12px;border-radius:10px}
+  .btn.danger{color:#ffd5dc;border-color:rgba(251,113,133,.35);background:rgba(251,113,133,.12)}
+  .hint{font-size:11.5px;color:var(--dim);margin-top:6px}
+
+  /* ---------- calendar ---------- */
+  .cal{margin-top:12px;border:1px solid var(--line);border-radius:14px;padding:10px;background:rgba(0,0,0,.2)}
+  .cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;gap:6px}
+  .cal-title{font-size:13px;font-weight:700}
+  .cal-nav{background:transparent;border:1px solid var(--line);color:var(--txt);border-radius:9px;width:28px;height:28px;line-height:1;font-size:15px}
+  .cal-nav:hover{background:var(--card2)}
+  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+  .dow{font-size:10.5px;color:var(--dim);text-align:center;padding:2px 0}
+  .day{aspect-ratio:1;border:1px solid transparent;background:rgba(255,255,255,.04);border-radius:9px;color:var(--txt);
+    font-size:12.5px;display:grid;place-items:center;transition:.14s;padding:0}
+  .day:hover{background:rgba(56,189,248,.2)}
+  .day.off{color:#ffb3c0;background:rgba(251,113,133,.09)}
+  .day.today{outline:1px solid rgba(74,222,128,.8);color:#c9ffdd}
+  .day.sel{background:linear-gradient(135deg,#34d399,#22b8e6);color:#04211a;font-weight:800;border-color:transparent}
+  .day.empty{background:transparent;cursor:default;pointer-events:none}
+  .sel-line{margin-top:9px;font-size:12.5px;color:#cfe4ff;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+  .sel-line b{color:#fff}
+
+  /* ---------- alert chips ---------- */
+  .presets{display:flex;flex-wrap:wrap;gap:7px;margin-top:4px}
+  .p-chip{border:1px solid var(--line);background:rgba(0,0,0,.22);color:var(--dim);border-radius:999px;
+    padding:6px 11px;font-size:12px;transition:.15s}
+  .p-chip:hover{color:#fff;border-color:rgba(56,189,248,.5)}
+  .p-chip.on{background:rgba(56,189,248,.2);border-color:rgba(56,189,248,.65);color:#e6f6ff;font-weight:700}
+
+  /* ---------- list ---------- */
+  .list{display:flex;flex-direction:column;gap:10px;max-height:min(70vh,720px);overflow:auto;padding-left:2px}
+  .item{display:flex;gap:12px;border:1px solid var(--line);border-radius:15px;padding:12px;background:rgba(0,0,0,.22);
+    position:relative;overflow:hidden;transition:.18s}
+  .item:hover{background:rgba(255,255,255,.07)}
+  .item.done{opacity:.5}
+  .item .bar{position:absolute;inset-inline-start:0;top:0;bottom:0;width:4px;background:linear-gradient(#34d399,#22b8e6)}
+  .item.late .bar{background:linear-gradient(#fbbf24,#fb7185)}
+  .datebox{min-width:62px;text-align:center;border-radius:12px;padding:7px 6px;background:rgba(56,189,248,.12);border:1px solid var(--line)}
+  .datebox .d{font-size:21px;font-weight:800;line-height:1.1}
+  .datebox .m{font-size:10.5px;color:#bfe6ff}
+  .i-main{flex:1;min-width:0}
+  .item{cursor:pointer}
+  .item{font-size:14px}
+  #list.fs-1 .item{font-size:12px}
+  #list.fs-3 .item{font-size:17px}
+  #list.fs-4 .item{font-size:20px}
+  .i-title{font-size:1.05em;font-weight:800;display:flex;gap:8px;align-items:center;flex-wrap:wrap;min-width:0;line-height:1.5}
+  .i-title-text{overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .i-ref{font-size:.8em;color:#9fb0d8;margin-top:2px;overflow-wrap:anywhere}
+  .i-date{font-size:.9em;color:#d7e8ff;font-weight:800;margin-top:5px;letter-spacing:.2px}
+  .i-date .clock{color:#8ef0b4;font-weight:700}
+  .i-meta{font-size:.8em;color:var(--dim);margin-top:4px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .i-meta .money{color:#8ef0b4;font-weight:700}
+  .i-meta .past{color:var(--warn);font-weight:700}
+  .datebox{min-width:3.9em}
+  .datebox .d{font-size:1.55em}
+  .datebox .m{font-size:.72em}
+  .i-alerts,.i-note{display:none}
+  /* ---- table view ---- */
+  .list-table{width:100%;border-collapse:collapse;font-size:13.5px}
+  .list-table th{position:sticky;top:0;background:#131c33;color:#bfe6ff;font-weight:800;padding:9px 8px;
+    text-align:right;white-space:nowrap;font-size:12px;z-index:2}
+  .list-table td{padding:9px 8px;border-top:1px solid rgba(255,255,255,.08);vertical-align:middle}
+  .list-table tbody tr{cursor:pointer}
+  .list-table tbody tr:hover{background:rgba(56,189,248,.1)}
+  .list-table tbody tr.done td{opacity:.5}
+  .list-table .t-name{font-weight:800;font-size:1em;overflow-wrap:anywhere;min-width:9em}
+  .list-table .t-ref{font-size:.8em;color:#9fb0d8;margin-top:2px}
+  .list-table .t-date{font-weight:800;color:#d7e8ff;white-space:nowrap}
+  .list-table .t-amount{color:#8ef0b4;font-weight:700;white-space:nowrap;font-size:.92em}
+  .list-table .t-count{white-space:nowrap;font-size:.85em;color:var(--dim)}
+  .list-table .t-count.past{color:var(--warn)}
+  .list-table .t-acts{white-space:nowrap;text-align:left}
+  .list-table .icon-btn{width:28px;height:26px;font-size:12px}
+  .list-tools .seg{display:flex;gap:4px}
+  .list-tools .seg .btn{padding:7px 9px;font-size:11.5px;border-radius:9px}
+  .i-meta{font-size:11.5px;color:var(--dim);margin-top:3px}
+  .i-note{font-size:12px;color:#c9d4ee;margin-top:5px;white-space:pre-wrap}
+  .i-alerts{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}
+  .tag{font-size:10.5px;border:1px solid var(--line);border-radius:999px;padding:2px 8px;color:#bfe6ff;background:rgba(56,189,248,.1)}
+  .tag.mail{color:#d8ffd8;background:rgba(74,222,128,.12);border-color:rgba(74,222,128,.3)}
+  .i-act{display:flex;flex-direction:column;gap:6px;justify-content:center;flex:0 0 auto}
+  .i-btns{display:flex;gap:6px;justify-content:center}
+  .icon-btn{width:32px;height:30px;border-radius:9px;border:1px solid var(--line);background:rgba(255,255,255,.1);
+    color:var(--txt);font-size:14px;display:grid;place-items:center;transition:.15s}
+  .icon-btn:hover{background:rgba(255,255,255,.2);transform:translateY(-1px)}
+  .icon-btn.danger{border-color:rgba(251,113,133,.45);background:rgba(251,113,133,.14)}
+  .selbox{width:16px;height:16px;accent-color:#38bdf8;flex:0 0 auto}
+  .bulk{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-bottom:9px;font-size:12px;color:var(--dim)}
+  .bulk .btn{padding:6px 10px;font-size:11.5px;border-radius:9px}
+  #selCount{color:#bfe6ff;font-weight:700}
+  .count{font-size:11px;color:var(--acc);white-space:nowrap;text-align:center}
+  .count.past{color:var(--warn)}
+  .empty-state{text-align:center;color:var(--dim);font-size:13px;padding:26px 10px}
+  .empty-state .big{font-size:32px;display:block;margin-bottom:6px;opacity:.8}
+
+  /* ---------- settings ---------- */
+  .settings{margin-top:16px}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media (max-width:940px){ .cols{grid-template-columns:1fr} }
+  .box{border:1px solid var(--line);border-radius:14px;padding:13px;background:rgba(0,0,0,.2)}
+  .box h3{font-size:13.5px;margin-bottom:6px}
+  .box p{font-size:11.5px;color:var(--dim);margin:0 0 8px}
+  .steps{font-size:11.8px;color:#c4d0ec;margin:8px 0 0;padding-inline-start:18px}
+  .steps li{margin-bottom:4px}
+  .log{font-size:11.5px;color:var(--dim);max-height:150px;overflow:auto;display:flex;flex-direction:column;gap:4px;margin-top:8px}
+  .log div{border-inline-start:2px solid var(--line);padding-inline-start:8px}
+  .log .ok{border-color:rgba(74,222,128,.6);color:#c9ffdd}
+  .log .err{border-color:rgba(251,113,133,.6);color:#ffd5dc}
+
+  /* ---------- alarm banner (همیشه کار می‌کند) ---------- */
+  #alarmBar{position:fixed;top:0;inset-inline:0;z-index:95;display:none;padding:10px}
+  #alarmBar.show{display:block}
+  .ab-in{max-width:820px;margin:0 auto;display:flex;gap:12px;align-items:center;flex-wrap:wrap;
+    background:linear-gradient(135deg,#ff8a4c,#e11d48);border-radius:16px;padding:12px 15px;color:#fff;
+    box-shadow:0 24px 60px -18px rgba(225,29,72,.85);animation:pulse 1.6s ease-in-out infinite, in .3s ease both}
+  @keyframes pulse{0%,100%{box-shadow:0 24px 60px -18px rgba(225,29,72,.85)}50%{box-shadow:0 24px 70px -10px rgba(255,138,76,1)}}
+  .ab-icon{font-size:26px;animation:shake 1s ease-in-out infinite}
+  @keyframes shake{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
+  .ab-txt{flex:1;min-width:180px;line-height:1.5}
+  .ab-txt b{display:block;font-size:15.5px}
+  .ab-txt span{font-size:12.5px;opacity:.95}
+  .ab-in .btn{background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.5);color:#fff;font-size:12.5px;padding:8px 12px}
+  .ab-in .btn:hover{background:rgba(255,255,255,.35)}
+  /* ---------- detail modal ---------- */
+  #detailModal{position:fixed;inset:0;background:rgba(4,8,18,.82);display:none;place-items:center;z-index:85;
+    padding:14px;backdrop-filter:blur(5px)}
+  #detailModal.show{display:grid}
+  @keyframes chipPulse{0%,100%{box-shadow:0 0 0 0 rgba(251,191,36,.42)}50%{box-shadow:0 0 0 7px rgba(251,191,36,0)}}
+  .chip.pulse{animation:chipPulse 1.7s ease-in-out infinite;border-color:rgba(251,191,36,.65)!important;color:#ffe9ad!important}
+  #lockScreen{position:fixed;inset:0;background:radial-gradient(circle at 50% 20%,#12203a,#070d18 70%);
+    display:none;place-items:center;z-index:9999;padding:18px}
+  #lockScreen.show{display:grid}
+  .lk-card{background:linear-gradient(180deg,#101a30,#0d1424);border:1px solid var(--line);border-radius:20px;
+    padding:20px;max-width:360px;width:100%;text-align:center;box-shadow:0 40px 90px -30px #000}
+  .lk-card .lk-ico{font-size:34px;margin-bottom:6px}
+  .lk-card h3{font-size:15px;margin-bottom:12px}
+  .lk-card input{text-align:center;letter-spacing:.4em;font-size:18px;font-weight:700}
+  .lk-card .btn{width:100%;margin-top:10px}
+  #alertModal,#helpModal{position:fixed;inset:0;background:rgba(4,8,18,.82);display:none;place-items:center;z-index:90;
+    padding:14px;backdrop-filter:blur(5px)}
+  #alertModal.show,#helpModal.show{display:grid}
+  #hmCard{max-width:660px}
+  #hmCard h4{font-size:13px;color:#bfe6ff;margin:14px 0 5px}
+  #hmCard p,#hmCard li{font-size:12.5px;line-height:1.95;color:var(--txt)}
+  #hmCard ul{padding-inline-start:18px;margin:4px 0}
+  #hmCard code{background:rgba(56,189,248,.12);border:1px solid var(--line);border-radius:6px;padding:1px 6px;font-size:11.5px}
+  .am-card{background:linear-gradient(180deg,#101a30,#0d1424);border:1px solid var(--line);border-radius:20px;
+    max-width:520px;width:100%;max-height:88vh;overflow:auto;padding:16px;box-shadow:0 40px 90px -40px #000;
+    animation:in .22s ease both}
+  .am-card h3{font-size:15px;margin-bottom:4px}
+  .am-card .presets{margin:12px 0 4px}
+  .dm-card{background:linear-gradient(180deg,#101a30,#0d1424);border:1px solid var(--line);border-radius:20px;
+    max-width:560px;width:100%;max-height:88vh;overflow:auto;padding:16px;box-shadow:0 40px 90px -40px #000;
+    animation:in .22s ease both}
+  .dm-top{display:flex;gap:12px;align-items:flex-start;margin-bottom:14px}
+  .dm-date{min-width:74px;text-align:center;border-radius:14px;padding:10px 6px;
+    background:linear-gradient(160deg,rgba(56,189,248,.22),rgba(74,222,128,.14));border:1px solid var(--line)}
+  .dm-date .d{font-size:28px;font-weight:800;line-height:1.1}
+  .dm-date .m{font-size:11px;color:#bfe6ff}
+  .dm-head{flex:1;min-width:0}
+  .dm-title{font-size:16.5px;font-weight:800;line-height:1.5;overflow-wrap:anywhere}
+  .dm-sub{font-size:12px;color:var(--dim);margin-top:4px}
+  .dm-x{background:transparent;border:1px solid var(--line);color:var(--txt);border-radius:10px;width:32px;height:32px;font-size:16px;flex:0 0 auto}
+  .dm-x:hover{background:var(--card2)}
+  .dm-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:13px}
+  @media (max-width:520px){ .dm-grid{grid-template-columns:1fr} }
+  .dm-cell{background:rgba(0,0,0,.26);border:1px solid var(--line);border-radius:12px;padding:9px 11px}
+  .dm-cell .k{font-size:10.5px;color:var(--dim);margin-bottom:2px}
+  .dm-cell .v{font-size:13px;font-weight:700;overflow-wrap:anywhere}
+  .dm-cell.wide{grid-column:1/-1}
+  .dm-sec{margin-bottom:13px}
+  .dm-sec h4{margin:0 0 6px;font-size:12px;color:var(--dim);font-weight:600}
+  .dm-note{background:rgba(0,0,0,.26);border:1px solid var(--line);border-radius:12px;padding:10px 12px;
+    font-size:12.5px;white-space:pre-wrap;overflow-wrap:anywhere;color:#d6dff5}
+  .dm-hist{font-size:11.5px;color:#ffd68a;display:flex;flex-direction:column;gap:5px}
+  .dm-hist div{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.25);border-radius:9px;padding:6px 9px}
+  .dm-acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+  .dm-acts .btn{flex:1;min-width:110px}
+  .dm-badge{display:inline-block;font-size:10.5px;border-radius:999px;padding:2px 9px;margin-inline-start:6px;
+    border:1px solid var(--line);background:rgba(255,255,255,.07);color:#cfe0ff}
+  /* ---------- edit / renew ---------- */
+  .edit-banner{display:none;gap:10px;align-items:center;flex-wrap:wrap;justify-content:space-between;
+    background:rgba(56,189,248,.13);border:1px solid rgba(56,189,248,.55);border-radius:14px;
+    padding:10px 12px;margin-bottom:12px;font-size:12.5px;line-height:1.6}
+  .edit-banner b{color:#eaf6ff}
+  .edit-banner .eb-txt{flex:1;min-width:200px}
+  .quick-shift{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+  .quick-shift .btn{padding:5px 9px;font-size:11px;border-radius:8px}
+  .renew-line{font-size:11px;color:#ffd68a;margin-top:5px}
+  /* ---------- import ---------- */
+  #dropZone{margin-top:9px;border:2px dashed rgba(56,189,248,.45);border-radius:14px;padding:18px;text-align:center;
+    font-size:12.5px;color:var(--dim);transition:.18s;cursor:pointer}
+  #dropZone.hot{background:rgba(56,189,248,.14);border-color:#38bdf8;color:#e6f6ff}
+  .map-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:9px}
+  .map-grid label{font-size:11.5px;color:var(--dim);display:block;margin-bottom:4px}
+  .preview-table{width:100%;border-collapse:collapse;font-size:12px}
+  .preview-table th{position:sticky;top:0;background:#131c33;color:#bfe6ff;font-weight:700;padding:8px;text-align:right;white-space:nowrap}
+  .preview-table td{padding:7px 8px;border-top:1px solid rgba(255,255,255,.07);white-space:nowrap}
+  .preview-table tr.bad td{background:rgba(251,113,133,.1);color:#ffd5dc}
+  .tag-pill{display:inline-block;font-size:10.5px;border-radius:999px;padding:1px 8px;background:rgba(56,189,248,.14);
+    border:1px solid var(--line);color:#bfe6ff}
+  .list-tools{display:flex;gap:7px;margin-bottom:9px;flex-wrap:wrap}
+  .list-tools input{flex:1;min-width:130px}
+  /* ---------- diagnostics ---------- */
+  .diag{display:flex;flex-direction:column;gap:5px;margin-top:8px}
+  .diag .d-row{display:flex;gap:8px;align-items:center;font-size:12px;border-bottom:1px dashed rgba(255,255,255,.08);padding-bottom:4px}
+  .diag .d-row .k{color:var(--dim);flex:0 0 48%}
+  .diag .d-row .v{font-weight:700}
+  .diag .d-row .v.ok{color:#8ef0b4}.diag .d-row .v.bad{color:#ffb3c0}.diag .d-row .v.mid{color:#ffd68a}
+  .fixbox{margin-top:9px;font-size:12px;line-height:1.85;background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.35);
+    border-radius:12px;padding:10px 12px;color:#ffe6a8}
+  .fixbox.ok{background:rgba(74,222,128,.1);border-color:rgba(74,222,128,.4);color:#c9ffdd}
+  .fixbox code{background:rgba(0,0,0,.35);padding:1px 5px;border-radius:5px;direction:ltr;display:inline-block}
+  /* ---------- toast + modal ---------- */
+  #toasts{position:fixed;inset-inline-start:16px;bottom:16px;display:flex;flex-direction:column;gap:8px;z-index:60;max-width:min(92vw,380px)}
+  .toast{background:rgba(12,20,38,.97);border:1px solid rgba(56,189,248,.45);border-radius:14px;padding:11px 14px;
+    box-shadow:0 24px 60px -24px #000;animation:in .28s ease both;font-size:13px}
+  .toast b{display:block;font-size:13.5px;margin-bottom:2px}
+  .toast small{color:var(--dim);font-size:11.5px}
+  .toast.ok{border-color:rgba(74,222,128,.6)}
+  .toast.err{border-color:rgba(251,113,133,.6)}
+  @keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  #modal{position:fixed;inset:0;background:rgba(4,8,18,.75);display:none;place-items:center;z-index:70;padding:16px;backdrop-filter:blur(4px)}
+  #modal.show{display:grid}
+  .modal-card{background:#0f172b;border:1px solid var(--line);border-radius:18px;max-width:820px;width:100%;padding:16px;box-shadow:0 40px 90px -40px #000}
+  .modal-card h3{font-size:14.5px;margin-bottom:6px}
+  .modal-card textarea{min-height:320px;font-family:ui-monospace,Consolas,monospace;font-size:11.5px;direction:ltr;text-align:left;line-height:1.5}
+  .modal-actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;justify-content:flex-end}
+  footer{text-align:center;color:var(--dim);font-size:11.5px;margin-top:22px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <div class="logo">⏰</div>
+      <div>
+        <h1>یادآور شمسی</h1>
+        <p id="todayLine">در حال محاسبه تاریخ…</p>
+      </div>
+    </div>
+    <div class="chips">
+      <button class="chip" id="saveChip" title="ذخیرهٔ همه‌چیز داخل همین فایل">💾 ذخیره</button>
+      <button class="chip" id="notifChip" title="برای فعال‌سازی اعلان ویندوز کلیک کنید">اعلان سیستم</button>
+      <button class="chip" id="helpChip" title="راهنمای سریع">📖 راهنما</button>
+      <span class="chip" id="emailChip">ایمیل: تنظیم نشده</span>
+      <button class="chip" id="soundChip" title="صدای زنگ">🔔 صدا: روشن</button>
+    </div>
+  </header>
+
+  <div id="warnBar" class="fixbox" style="display:none;margin-bottom:14px"></div>
+  <div id="onlineBar" class="fixbox ok" style="display:none;margin-bottom:14px">
+    🌐 <b>حالت آنلاین فعال است.</b> داده‌ها خودکار در همین مرورگر ذخیره می‌شوند.
+    برای پشتیبان: «⬇️ پشتیبان‌گیری (JSON)» — برای ایمیل وقتی سیستم خاموش است: آدرس ابری را در بخش «همگام‌سازی خودکار ابری» بگذارید.
+    <button class="btn sm ghost" id="onlineHelp" style="margin-inline-start:8px">جزئیات</button>
+  </div>
+
+  <div class="grid">
+    <!-- ============ FORM ============ -->
+    <section class="card">
+      <h2 id="formTitle">➕ یادآور جدید <span class="mini">تاریخ شمسی، ساعت، و یادآوری‌های پیشاپیش</span></h2>
+
+      <div class="edit-banner" id="editBanner">
+        <div class="eb-txt">
+          ✏️ در حال ویرایش: <b id="editName"></b>
+          <div id="editHint" style="color:var(--dim);font-size:11.5px"></div>
+          <div class="quick-shift">
+            <span style="color:var(--dim);font-size:11px;align-self:center">تمدید سریع:</span>
+            <button class="btn sm ghost" data-shift="d10">+ ۱۰ روز</button>
+            <button class="btn sm ghost" data-shift="m1">+ ۱ ماه</button>
+            <button class="btn sm ghost" data-shift="m2">+ ۲ ماه</button>
+            <button class="btn sm ghost" data-shift="m3">+ ۳ ماه</button>
+            <button class="btn sm ghost" data-shift="m6">+ ۶ ماه</button>
+            <button class="btn sm ghost" data-shift="y1">+ ۱ سال</button>
+          </div>
+        </div>
+        <button class="btn sm ghost" id="cancelEdit">انصراف</button>
+      </div>
+
+      <label class="f" for="title">عنوان</label>
+      <input type="text" id="title" placeholder="مثلاً: جلسه با مشتری / پرداخت قسط / تولد سارا">
+
+      <label class="f" for="note">توضیحات (اختیاری)</label>
+      <textarea id="note" placeholder="هر چیزی که لازم است در لحظه یادآوری ببینید…"></textarea>
+
+      <label class="f">تاریخ شمسی</label>
+      <div class="cal">
+        <div class="cal-head">
+          <button class="cal-nav" id="prevM" title="ماه قبل">›</button>
+          <div class="cal-title" id="calTitle">—</div>
+          <button class="cal-nav" id="nextM" title="ماه بعد">‹</button>
+        </div>
+        <div class="cal-grid" id="dowRow"></div>
+        <div class="cal-grid" id="calGrid" style="margin-top:4px"></div>
+        <div class="sel-line">
+          <span>انتخاب: <b id="selDate">—</b></span>
+          <span>
+            <button class="btn sm ghost" id="setToday">امروز</button>
+            <button class="btn sm ghost" id="setTomorrow">فردا</button>
+          </span>
+        </div>
+      </div>
+
+      <label class="f">ساعت</label>
+      <div class="row">
+        <select id="hh"></select>
+        <select id="mm"></select>
+        <button class="btn sm" id="setNow" style="flex:0 0 auto">الان</button>
+      </div>
+
+      <label class="f">یادآوری پیشاپیش <span class="mini">(چند مورد را می‌توانید همزمان انتخاب کنید)</span></label>
+      <div class="presets" id="presets"></div>
+      <div class="row" style="margin-top:9px">
+        <input type="number" id="custVal" min="1" max="999" value="2" style="flex:0 0 84px" placeholder="عدد">
+        <select id="custUnit" style="flex:0 0 110px">
+          <option value="d">روز قبل</option>
+          <option value="h" selected>ساعت قبل</option>
+          <option value="m">دقیقه قبل</option>
+        </select>
+        <button class="btn sm" id="addCust" style="flex:0 0 auto">➕ افزودن</button>
+      </div>
+      <div class="presets" id="customs" style="margin-top:8px"></div>
+
+      <label class="f" style="display:flex;gap:9px;align-items:center;margin-top:14px;color:var(--txt);font-size:13px">
+        <input type="checkbox" id="mailOn" checked style="width:17px;height:17px;accent-color:#34d399">
+        ارسال ایمیل هنگام هر یادآوری
+      </label>
+
+      <div class="row" style="margin-top:14px">
+        <button class="btn primary" id="addBtn">افزودن یادآور</button>
+      </div>
+      <div class="hint" id="planPreview">—</div>
+    </section>
+
+    <!-- ============ LIST ============ -->
+    <section class="card">
+      <h2>📋 یادآورها <span class="mini" id="listCount"></span></h2>
+      <div class="hint" id="nextInfo" style="margin:-6px 0 8px"></div>
+      <div class="bulk">
+        <label style="display:flex;gap:6px;align-items:center;cursor:pointer">
+          <input type="checkbox" id="selAll" class="selbox"> انتخاب همه
+        </label>
+        <button class="btn sm ghost" id="bulkAlerts">⏰ پیش‌یادآور انتخاب‌شده‌ها</button>
+        <button class="btn sm danger" id="delSel">🗑️ حذف انتخاب‌شده‌ها</button>
+        <button class="btn sm ghost" id="delDone">حذف انجام‌شده‌ها</button>
+        <button class="btn sm ghost" id="delAll">حذف همه</button>
+        <span id="selCount"></span>
+      </div>
+      <div class="list-tools">
+        <input type="text" id="searchBox" placeholder="🔍 جستجو: عنوان، شماره، دسته، توضیحات…">
+        <div class="seg">
+          <button class="btn sm ghost" id="viewBtn" title="تغییر نمایش کارت/جدول">🗂 کارت</button>
+          <button class="btn sm ghost" id="fsDown" title="کوچک‌تر">A−</button>
+          <button class="btn sm ghost" id="fsUp" title="بزرگ‌تر">A+</button>
+        </div>
+        <select id="filterSel" style="flex:0 0 120px">
+          <option value="active">فعال‌ها</option>
+          <option value="all">همه</option>
+          <option value="done">انجام‌شده</option>
+          <option value="today">امروز</option>
+          <option value="week">۷ روز آینده</option>
+        </select>
+      </div>
+      <div class="list" id="list"></div>
+    </section>
+  </div>
+
+  <!-- ============ IMPORT ============ -->
+  <section class="card" id="importCard">
+    <h2>📥 ورود گروهی از اکسل <span class="mini">چک، ضمانت‌نامه، هر لیستی — یک‌جا</span></h2>
+
+    <div class="cols">
+      <div class="box">
+        <h3>۱) داده را بدهید</h3>
+        <div class="row" style="margin-bottom:9px">
+          <button class="btn sm" id="tabPaste">📋 چسباندن از اکسل</button>
+          <button class="btn sm ghost" id="tabFile">📄 فایل .xlsx / .csv</button>
+          <button class="btn sm ghost" id="tplBtn">⬇️ قالب نمونه</button>
+        </div>
+
+        <div id="pastePane">
+          <textarea id="pasteBox" spellcheck="false" style="min-height:150px;direction:rtl"
+            placeholder="در اکسل محدوده را انتخاب و Ctrl+C کنید، بعد اینجا Ctrl+V کنید.
+
+نمونه (هر سطر یک ردیف است):
+عنوان	شماره	تاریخ	ساعت	مبلغ	دسته
+چک بانک ملت	۱۲۳۴۵۶	1405/09/20	10:30	25,000,000	چک
+ضمانت‌نامه اجرا	GN-778	1405/10/05	09:00	500,000,000	ضمانت‌نامه"></textarea>
+          <button class="btn sm" id="parsePaste" style="margin-top:8px">پردازش متن چسبانده‌شده</button>
+        </div>
+
+        <div id="filePane" style="display:none">
+          <input type="file" id="fileInput" accept=".xlsx,.csv,.txt" style="padding:8px">
+          <div id="dropZone">فایل را اینجا رها کنید (یا انتخاب کنید)</div>
+          <p class="hint">فایل‌های با پسوند .xlsx و .csv پشتیبانی می‌شوند. اگر فایل قدیمی .xls دارید، در اکسل با «Save As» به .xlsx یا CSV تبدیل کنید.</p>
+        </div>
+
+        <p class="hint" id="importStatus"></p>
+      </div>
+
+      <div class="box">
+        <h3>۲) تنظیمات پیش‌فرض ورود</h3>
+        <p>این‌ها روی همه‌ی ردیف‌ها اعمال می‌شود (بعداً هم می‌توانید حذف/تغییر دهید).</p>
+        <div class="row">
+          <div>
+            <label class="f">ساعت پیش‌فرض (اگر ستون ساعت نبود)</label>
+            <div class="row">
+              <select id="impHh"></select>
+              <select id="impMm"></select>
+            </div>
+          </div>
+        </div>
+        <label class="f">یادآوری پیشاپیش برای همه</label>
+        <div class="presets" id="impPresets"></div>
+        <p class="hint" id="impAlertsInfo"></p>
+        <label class="f" style="display:flex;gap:8px;align-items:center;color:var(--txt)">
+          <input type="checkbox" id="impMail" checked style="width:16px;height:16px;accent-color:#34d399">
+          ایمیل هم ارسال شود
+        </label>
+        <div class="row" style="margin-top:10px">
+          <button class="btn sm ghost" id="downloadPreview">⬇️ خروجی پیش‌نمایش (CSV)</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="box" id="mapBox" style="display:none;margin-top:14px">
+      <h3>۳) تطبیق ستون‌ها <span class="mini">(خودکار تشخیص داده شد — قابل تغییر است)</span></h3>
+      <div class="map-grid" id="mapGrid"></div>
+      <label class="f" style="display:flex;gap:8px;align-items:center;color:var(--txt);margin-top:10px">
+        <input type="checkbox" id="hasHeader" checked style="width:16px;height:16px;accent-color:#38bdf8">
+        ردیف اول، عنوان ستون‌هاست
+      </label>
+    </div>
+
+    <div class="box" id="previewBox" style="display:none;margin-top:14px">
+      <h3>۴) پیش‌نمایش و افزودن</h3>
+      <p id="previewStats"></p>
+      <div style="overflow:auto;max-height:340px;border:1px solid var(--line);border-radius:12px">
+        <table class="preview-table" id="previewTable"></table>
+      </div>
+      <div class="row" style="margin-top:11px">
+        <button class="btn primary" id="doImport">افزودن به لیست یادآورها</button>
+        <button class="btn ghost" id="clearImport">پاک کردن</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SETTINGS ============ -->
+  <section class="card settings">
+    <h2>⚙️ تنظیمات و ارسال ایمیل</h2>
+    <div class="cols">
+      <div class="box">
+        <h3>📧 ایمیل (EmailJS — رایگان و بدون سرور)</h3>
+        <p>با این روش، برنامه مستقیم از مرورگر ایمیل می‌فرستد؛ نیازی به پسورد جیمیل نیست.</p>
+        <label class="f">ایمیل گیرنده</label>
+        <input type="email" id="toEmail" placeholder="you@gmail.com" dir="ltr">
+        <label class="f">Public Key (EmailJS)</label>
+        <input type="text" id="publicKey" placeholder="مثلاً X1y2Z3..." dir="ltr">
+        <label class="f">Service ID</label>
+        <input type="text" id="serviceId" placeholder="service_xxxxx" dir="ltr">
+        <label class="f">Template ID</label>
+        <input type="text" id="templateId" placeholder="template_xxxxx" dir="ltr">
+        <div class="row" style="margin-top:12px">
+          <button class="btn" id="saveMail">ذخیره</button>
+          <button class="btn ghost" id="testMail">ایمیل آزمایشی</button>
+        </div>
+        <ol class="steps">
+          <li>در <span dir="ltr">emailjs.com</span> ثبت‌نام کنید و سرویس Gmail را وصل کنید.</li>
+          <li>یک Template بسازید با متغیرهای: <code dir="ltr">to_email, subject, title, when_fa, alert_label, note, late_note</code></li>
+          <li>در Template، فیلد <b>To Email</b> را روی <code dir="ltr">{{to_email}}</code> بگذارید.</li>
+          <li>سه شناسه را این‌جا وارد کنید و «ایمیل آزمایشی» را بزنید.</li>
+        </ol>
+      </div>
+
+      <div class="box">
+        <h3>☁️ اجرای ابری — حتی وقتی کامپیوتر خاموش است</h3>
+        <p>مرورگر وقتی بسته باشد نمی‌تواند یادآوری بفرستد. برای پوشش کامل، دو مسیر آفلاین‌پسند دارید:</p>
+        <div class="row" style="margin:8px 0">
+          <button class="btn" id="icsBtn">📅 دانلود فایل تقویم (.ics)</button>
+          <button class="btn" id="gasBtn">☁️ اسکریپت ابری گوگل</button>
+        </div>
+        <ol class="steps">
+          <li><b>فایل .ics:</b> در Google Calendar با Import وارد کنید؛ گوگل هنگام یادآوری ایمیل و اعلان می‌فرستد (بدون روشن بودن PC).</li>
+          <li><b>Apps Script گوگل:</b> کد تولیدشده را در <span dir="ltr">script.google.com</span> بگذارید، یک‌بار <code dir="ltr">setup()</code> را اجرا کنید. اسکریپت هر دقیقه در سرور گوگل چک می‌کند و ایمیل می‌فرستد — کاملاً مستقل از سیستم شما.</li>
+        </ol>
+        <div class="row" style="margin-top:12px">
+          <button class="btn ghost sm" id="exportJson">⬇️ پشتیبان‌گیری (JSON)</button>
+          <button class="btn ghost sm" id="importJson">⬆️ بازگردانی (JSON)</button>
+        </div>
+        <div class="log" id="log"></div>
+      </div>
+
+      <div class="box" style="grid-column:1/-1">
+        <h3>☁️ همگام‌سازی خودکار ابری (اختیاری — دیگر لازم نیست اسکریپت گوگل را دستی آپدیت کنید)</h3>
+        <p>یک بار آدرس «Web App» اسکریپت گوگل را این‌جا بگذارید؛ از آن به بعد <b>هر تغییری</b> (افزودن، تمدید، حذف) خودکار به گوگل فرستاده می‌شود و ایمیل‌های یادآوری از همان داده‌های به‌روز ارسال می‌شوند — حتی وقتی کامپیوتر خاموش است.</p>
+        <div class="row">
+          <input type="text" id="cloudUrl" placeholder="https://script.google.com/macros/s/AKfycb.../exec" dir="ltr">
+          <button class="btn sm" id="saveCloud" style="flex:0 0 auto">ذخیره</button>
+          <button class="btn sm ghost" id="testCloud" style="flex:0 0 auto">ارسال آزمایشی</button>
+        </div>
+        <p class="hint" id="cloudStatus"></p>
+      </div>
+
+      <div class="box" id="notifBox" style="grid-column:1/-1">
+        <h3>🔔 وضعیت اعلان ویندوز — چرا نوتیف نمی‌آید؟</h3>
+        <div class="row" style="gap:16px;margin:2px 0 10px">
+          <label style="display:flex;gap:8px;align-items:center;font-size:12.5px;color:var(--txt)">
+            <input type="checkbox" id="optBrowser" style="width:16px;height:16px;accent-color:#38bdf8">
+            اعلان مرورگر (گوشهٔ ویندوز)
+          </label>
+          <label style="display:flex;gap:8px;align-items:center;font-size:12.5px;color:var(--txt)">
+            <input type="checkbox" id="optPop" style="width:16px;height:16px;accent-color:#34d399">
+            پنجرهٔ اعلان گوشهٔ صفحه (کار می‌کند حتی با دابل‌کلیک)
+          </label>
+        </div>
+        <p>این جدول دلیل دقیق را نشان می‌دهد. اگر چیزی قرمز بود، راه‌حل زیرش نوشته شده است.</p>
+        <div class="diag" id="diag"></div>
+        <div class="fixbox" id="fixHint"></div>
+        <div class="row" style="margin-top:11px">
+          <button class="btn sm" id="testNotif">🔔 تست کامل اعلان</button>
+          <button class="btn sm ghost" id="recheck">🔄 بررسی مجدد</button>
+        </div>
+        <p class="hint" style="margin-top:9px">مهم: حتی اگر اعلان سیستم مسدود باشد، هنگام یادآوری یک <b>بنر قرمز تمام‌عرض + صدا + چشمک‌زدن عنوان تب</b> نمایش داده می‌شود که در هر شرایطی کار می‌کند.</p>
+      </div>
+
+      <div class="box" style="grid-column:1/-1">
+        <h3>🔒 قفل با PIN (برای اینکه فقط خودتان ببینید)</h3>
+        <p>اگر لینک آنلاین را روی گوشی یا کامپیوتر مشترک باز می‌کنید، PIN بگذارید تا کسی نتواند لیست یادآورها را ببیند.
+           <span style="color:var(--dim)">(این قفل جلوی چشم کنجکاو را می‌گیرد، ولی رمزنگاری نیست؛ داده‌ها در مرورگر همین دستگاه هستند.)</span></p>
+        <div class="row">
+          <input type="password" id="pinInput" placeholder="PIN — ۴ تا ۸ رقم" dir="ltr" inputmode="numeric" maxlength="8" style="flex:0 1 220px">
+          <button class="btn sm" id="pinSave" style="flex:0 0 auto">ذخیرهٔ PIN</button>
+          <button class="btn sm ghost" id="pinClear" style="flex:0 0 auto">حذف قفل</button>
+        </div>
+        <p class="hint" id="pinStatus"></p>
+      </div>
+    </div>
+  </section>
+
+  <footer>یادآور شمسی — نسخهٔ <b id="verBadge">…</b> — همهٔ داده‌ها داخل همین فایل و مرورگر ذخیره می‌شوند.</footer>
+</div>
+
+<input type="file" id="jsonInput" accept=".json,.html,.htm,application/json,text/html" style="display:none">
+<div id="detailModal"><div class="dm-card" id="dmCard"></div></div>
+<div id="alertModal"><div class="am-card" id="amCard"></div></div>
+<div id="helpModal"><div class="am-card" id="hmCard"></div></div>
+<div id="lockScreen">
+  <div class="lk-card">
+    <div class="lk-ico">🔒</div>
+    <h3>برای دیدن یادآورها PIN را بزنید</h3>
+    <input type="password" id="lkPin" inputmode="numeric" maxlength="8" dir="ltr" placeholder="••••">
+    <button class="btn primary" id="lkGo">باز کردن</button>
+    <p class="hint" id="lkErr" style="min-height:16px"></p>
+    <button class="btn ghost sm" id="lkForgot">PIN را فراموش کرده‌ام</button>
+  </div>
+</div>
+<div id="alarmBar">
+  <div class="ab-in">
+    <div class="ab-icon">⏰</div>
+    <div class="ab-txt"><b id="abTitle">یادآوری</b><span id="abSub"></span></div>
+    <button class="btn" id="abSnooze">۱۰ دقیقه بعد</button>
+    <button class="btn" id="abOk">باشه، دیدم</button>
+  </div>
+</div>
+<div id="toasts"></div>
+<div id="modal">
+  <div class="modal-card">
+    <h3 id="modalTitle">کد</h3>
+    <p class="hint" id="modalSub"></p>
+    <textarea id="modalText" spellcheck="false" readonly></textarea>
+    <div class="modal-actions">
+      <button class="btn sm ghost" id="modalClose">بستن</button>
+      <button class="btn sm" id="modalDl">دانلود فایل</button>
+      <button class="btn sm primary" id="modalCopy">کپی</button>
+    </div>
+  </div>
+</div>
+
+<script id="ydData" type="application/json">{}</script>
+<script>
+/* نسخهٔ دست‌نخوردهٔ همین فایل — برای «ذخیرهٔ یک‌فایله» استفاده می‌شود */
+const PRISTINE_HTML='<!DOCTYPE html>\n'+document.documentElement.outerHTML;
+const APP_VERSION='3.1';
+/* حالت آنلاین: صفحه از یک آدرس https (یا هاست) باز شده، نه با دابل‌کلیک */
+const ONLINE = (function(){
+  try{
+    const h=location.hostname;
+    if(location.protocol==='https:') return true;
+    if(location.protocol==='http:' && h && !/^(localhost|127\.0\.0\.1)$/.test(h)) return true;
+  }catch(e){}
+  return false;
+})();
+
+/* =========================================================
+   ۱) موتور تاریخ شمسی (jalaali-js) — تست‌شده و بدون خطا
+   ========================================================= */
+const div=(a,b)=>~~(a/b), mod=(a,b)=>a-~~(a/b)*b;
+const BREAKS=[-61,9,38,199,426,686,756,818,1111,1181,1210,1635,2060,2097,2192,2262,2324,2394,2456,3178];
+function jalCal(jy){
+  const bl=BREAKS.length, gy=jy+621; let leapJ=-14, jp=BREAKS[0], jm, jump=0, leap, leapG, march, n, i;
+  for(i=1;i<bl;i++){ jm=BREAKS[i]; jump=jm-jp; if(jy<jm) break; leapJ=leapJ+div(jump,33)*8+div(mod(jump,33),4); jp=jm; }
+  n=jy-jp;
+  leapJ=leapJ+div(n,33)*8+div(mod(n,33)+3,4);
+  if(mod(jump,33)===4 && jump-n===4) leapJ+=1;
+  leapG=div(gy,4)-div((div(gy,100)+1)*3,4)-150;
+  march=20+leapJ-leapG;
+  if(jump-n<6) n=n-jump+div(jump+4,33)*33;
+  leap=mod(mod(n+1,33)-1,4); if(leap===-1) leap=4;
+  return {leap,gy,march};
+}
+const g2d=(gy,gm,gd)=>{let d=div((gy+div(gm-8,6)+100100)*1461,4)+div(153*mod(gm+9,12)+2,5)+gd-34840408;
+  d=d-div(div(gy+100100+div(gm-8,6),100)*3,4)+752; return d;};
+const d2g=(jdn)=>{let j=4*jdn+139361631; j=j+div(div(4*jdn+183187720,146097)*3,4)*4-3908;
+  const i=div(mod(j,1461),4)*5+308; const gd=div(mod(i,153),5)+1; const gm=mod(div(i,153),12)+1;
+  const gy=div(j,1461)-100100+div(8-gm,6); return {gy,gm,gd};};
+const j2d=(jy,jm,jd)=>{const r=jalCal(jy); return g2d(r.gy,3,r.march)+(jm-1)*31-div(jm,7)*(jm-7)+jd-1;};
+const d2j=(jdn)=>{let g=d2g(jdn), jy=g.gy-621, r=jalCal(jy), jdn1f=g2d(g.gy,3,r.march), jd,jm,k; k=jdn-jdn1f;
+  if(k>=0){ if(k<=185){ jm=1+div(k,31); jd=mod(k,31)+1; return {jy,jm,jd}; } else { k-=186; } }
+  else { jy-=1; k+=179; if(r.leap===1) k+=1; }
+  jm=7+div(k,30); jd=mod(k,30)+1; return {jy,jm,jd};};
+const toJ=(gy,gm,gd)=>d2j(g2d(gy,gm,gd));
+const toG=(jy,jm,jd)=>d2g(j2d(jy,jm,jd));
+const isLeapJ=jy=>jalCal(jy).leap===0;
+const monthLen=(jy,jm)=> jm<=6?31 : jm<=11?30 : (isLeapJ(jy)?30:29);
+
+/* =========================================================
+   ۲) ابزارهای کوچک
+   ========================================================= */
+const MONTHS=['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'];
+const DOWS=['شنبه','یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه'];
+const FA=['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+const toFa=v=>String(v).replace(/\d/g,d=>FA[+d]);
+const pad2=n=>String(n).padStart(2,'0');
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const $=id=>document.getElementById(id);
+function scrollToEl(el, block){ try{ if(el && typeof el.scrollIntoView==='function') el.scrollIntoView({behavior:'smooth',block:block||'center'}); }catch(e){} }
+const uid=()=>'r'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+function dowIndexFromDate(d){ return (d.getDay()+1)%7; }        // شنبه = ۰
+function dowIndexJ(jy,jm,jd){ const g=toG(jy,jm,jd); return dowIndexFromDate(new Date(g.gy,g.gm-1,g.gd)); }
+function jalStr(jy,jm,jd){ return `${toFa(jd)} ${MONTHS[jm-1]} ${toFa(jy)}`; }
+function jalFull(jy,jm,jd){ return `${DOWS[dowIndexJ(jy,jm,jd)]} ${jalStr(jy,jm,jd)}`; }
+function jalFromTs(ts){ const d=new Date(ts); const j=toJ(d.getFullYear(),d.getMonth()+1,d.getDate()); return j; }
+
+/* ذخیره‌سازی با فالبک حافظه (در iframe محدود هم خراب نشود) */
+const store=(()=>{
+  let ok=true, mem={};
+  try{ localStorage.setItem('__t','1'); localStorage.removeItem('__t'); }catch(e){ ok=false; }
+  return {
+    get(k,d){ try{ const v= ok? localStorage.getItem(k): mem[k]; return v==null? d : JSON.parse(v); }catch(e){ return d; } },
+    set(k,v){ try{ const s=JSON.stringify(v); if(ok) localStorage.setItem(k,s); else mem[k]=s; }catch(e){} },
+    persistent:ok
+  };
+})();
+
+/* =========================================================
+   ۳) وضعیت برنامه
+   ========================================================= */
+const state={
+  reminders: store.get('yd_reminders', []),
+  fired:     store.get('yd_fired', {}),
+  logs:      store.get('yd_logs', []),
+  settings:  Object.assign({
+    toEmail:'', publicKey:'', serviceId:'', templateId:'', sound:true,
+    browserNotif:true, nativeToast:false, popToast:true, view:'card', fontSize:2,
+    cloudUrl:'', cloudAuto:true
+  }, store.get('yd_settings', {})),
+  updatedAt: store.get('yd_updated', 0)
+};
+const saveAll=(opts)=>{
+  state.updatedAt=Date.now();
+  store.set('yd_reminders',state.reminders);
+  store.set('yd_fired',state.fired);
+  store.set('yd_logs',state.logs.slice(0,40));
+  store.set('yd_settings',state.settings);
+  store.set('yd_updated',state.updatedAt);
+  if(!(opts && opts.silent)) markDirty();
+};
+
+/* انتخاب جاری فرم */
+const now=new Date();
+const nj=toJ(now.getFullYear(),now.getMonth()+1,now.getDate());
+const form={
+  jy:nj.jy, jm:nj.jm, jd:nj.jd,
+  hh:9, mm:0,
+  calYear:nj.jy, calMonth:nj.jm,
+  alerts:[{unit:'d',value:1},{unit:'h',value:3}]
+};
+
+/* =========================================================
+   ۴) کمکی‌های یادآوری
+   ========================================================= */
+const unitFa={d:'روز',h:'ساعت',m:'دقیقه'};
+/* چیپ‌های آماده — شامل ۱ و ۲ و ۵ دقیقه برای یادآورهای فوری همان روز */
+const PRESETS=[[30,'d'],[20,'d'],[10,'d'],[7,'d'],[3,'d'],[2,'d'],[1,'d'],[12,'h'],[6,'h'],[3,'h'],[1,'h'],[30,'m'],[10,'m'],[5,'m'],[2,'m'],[1,'m']];
+const PRESET_KEYS=new Set(PRESETS.map(([v,u])=>v+u));
+const minutesOf=a=> a.unit==='d'? a.value*1440 : a.unit==='h'? a.value*60 : a.value;
+const alertLabel=a=> minutesOf(a)===0? 'سرِ موعد' : `${toFa(a.value)} ${unitFa[a.unit]} قبل`;
+/* هر یادآور همیشه «سرِ موعد» هم اعلان می‌دهد — حتی اگر هیچ پیش‌یادآوری انتخاب نشده باشد */
+function alertsOf(r){
+  const list=(r.alerts||[]).slice();
+  if(!list.some(a=>minutesOf(a)===0)) list.push({unit:'m',value:0});
+  return list;
+}
+function tsOf(r){ const g=toG(r.jy,r.jm,r.jd); return new Date(g.gy,g.gm-1,g.gd,r.hh,r.mm,0,0).getTime(); }
+function humanDelta(ms){
+  const abs=Math.abs(ms), d=Math.floor(abs/864e5), h=Math.floor(abs%864e5/36e5), m=Math.floor(abs%36e5/6e4);
+  const parts=[];
+  if(d) parts.push(toFa(d)+' روز');
+  if(h) parts.push(toFa(h)+' ساعت');
+  if(m && !d) parts.push(toFa(m)+' دقیقه');
+  return parts.length? parts.join(' و ') : toFa(Math.max(1,Math.round(abs/1000)))+' ثانیه';
+}
+
+/* =========================================================
+   ۵) توست / صدا / اعلان / هشدار تمام‌صفحه
+   ========================================================= */
+let flashTimer=null, baseTitle='یادآور شمسی';
+function flashTitle(txt){
+  clearInterval(flashTimer);
+  let on=false;
+  flashTimer=setInterval(()=>{ document.title = on? baseTitle : ('⏰ '+txt); on=!on; }, 1100);
+}
+function stopFlash(){ clearInterval(flashTimer); document.title=baseTitle; }
+
+/* بنر قرمز هشدار: مستقل از اجازه‌ی اعلان مرورگر همیشه نمایش داده می‌شود */
+let alarmQueue=0;
+/* --- بوق تکرارشونده تا وقتی کاربر تأیید کند --- */
+let alarmLoop=null;
+function startAlarmLoop(){
+  stopAlarmLoop();
+  let n=0;
+  alarmLoop=setInterval(()=>{ n++; if(n>8){ stopAlarmLoop(); return; } beep(); }, 5000);
+}
+function stopAlarmLoop(){ if(alarmLoop){ clearInterval(alarmLoop); alarmLoop=null; } }
+
+/* --- پنجرهٔ اعلان کوچک گوشهٔ صفحه (بدون هیچ فایل اضافه) --- */
+let popWin=null, popBlockedShown=false;
+function popToast(title, body){
+  try{
+    const W=370, H=170;
+    const sw=(window.screen&&window.screen.availWidth)||1280;
+    const sh=(window.screen&&window.screen.availHeight)||800;
+    const feats=`popup=yes,width=${W},height=${H},left=${sw-W-18},top=${sh-H-70},resizable=yes,scrollbars=no,titlebar=yes`;
+    const w=window.open('', 'ydToastWin', feats);
+    if(!w){ return false; }
+    popWin=w;
+    const d=w.document;
+    d.open(); d.write('<!doctype html><html dir="rtl" lang="fa"><head><meta charset="utf-8"><title>⏰ یادآور شمسی</title></head><body></body></html>'); d.close();
+    d.body.style.cssText='margin:0;padding:0;background:#0b1424;font-family:Tahoma,Vazirmatn,sans-serif';
+    d.body.innerHTML=`<div dir="rtl" style="height:100vh;box-sizing:border-box;border:2px solid #38bdf8;border-radius:14px;
+        background:linear-gradient(160deg,#13203a,#0b1424);color:#eaf3ff;padding:12px 14px;overflow:auto">
+      <div style="font-weight:800;font-size:14.5px;line-height:1.7;margin-bottom:6px">${title.replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]))}</div>
+      <div style="font-size:12.5px;line-height:1.9;color:#cfe4ff">${body.replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]))}</div>
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <button id="ydOk" style="flex:1;cursor:pointer;background:#38bdf8;color:#04121f;border:0;border-radius:9px;padding:7px;font-weight:800;font-family:inherit">باشه، فهمیدم</button>
+        <button id="ydClose" style="cursor:pointer;background:transparent;color:#9fc7e8;border:1px solid #2a4364;border-radius:9px;padding:7px 10px;font-family:inherit">بستن</button>
+      </div>
+    </div>`;
+    const close=()=>{ try{ w.close(); }catch(e){} };
+    d.getElementById('ydOk').onclick=close;
+    d.getElementById('ydClose').onclick=close;
+    try{ w.focus(); }catch(e){}
+    try{ w.setTimeout(close, 120000); }catch(e){}
+    return true;
+  }catch(e){ return false; }
+}
+
+function showAlarmBar(title, sub, rem, alert){
+  alarmQueue++;
+  const bar=$('alarmBar');
+  $('abTitle').textContent = '⏰ '+title;
+  $('abSub').textContent = sub + (alarmQueue>1? ` — (${toFa(alarmQueue)} یادآوری در صف)`:'');
+  bar.classList.add('show');
+  try{ window.scrollTo({top:0,behavior:'smooth'}); }catch(e){ window.scrollTo(0,0); }
+  $('abOk').onclick=()=>{ alarmQueue=0; bar.classList.remove('show'); stopFlash(); stopAlarmLoop(); };
+  $('abSnooze').onclick=()=>{
+    bar.classList.remove('show'); stopFlash(); stopAlarmLoop();
+    setTimeout(()=>{ fire(rem, alert, Date.now(), Date.now()); }, 10*60000);
+    toast('۱۰ دقیقه دیگر یادآوری می‌شود','اسنوز ثبت شد.');
+  };
+}
+function toast(title, sub, kind){
+  const el=document.createElement('div');
+  el.className='toast'+(kind?' '+kind:'');
+  el.innerHTML=`<b>${esc(title)}</b><small>${esc(sub||'')}</small>`;
+  $('toasts').appendChild(el);
+  setTimeout(()=>{ el.style.opacity='0'; el.style.transform='translateY(8px)'; setTimeout(()=>el.remove(),320); }, 7000);
+}
+let audioCtx=null;
+function beep(){
+  if(!state.settings.sound) return;
+  try{
+    audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
+    const t0=audioCtx.currentTime;
+    [0,0.22,0.44].forEach((off,i)=>{
+      const o=audioCtx.createOscillator(), g=audioCtx.createGain();
+      o.type='sine'; o.frequency.value= i===1? 1180 : 880;
+      g.gain.setValueAtTime(0.0001,t0+off);
+      g.gain.exponentialRampToValueAtTime(0.25,t0+off+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001,t0+off+0.18);
+      o.connect(g).connect(audioCtx.destination);
+      o.start(t0+off); o.stop(t0+off+0.2);
+    });
+  }catch(e){}
+}
+function notify(title, body){
+  try{
+    if('Notification' in window && Notification.permission==='granted'){
+      const n=new Notification(title,{body:body, dir:'rtl', lang:'fa', tag:'yadavar-'+Date.now(), requireInteraction:true, silent:false});
+      n.onclick=()=>{ try{ window.focus(); }catch(e){} n.close(); };
+      return true;
+    }
+  }catch(e){}
+  return false;
+}
+/* ---------- پل اعلان نیتیو ویندوز (سرور محلی) ---------- */
+const BRIDGE=(function(){
+  try{
+    const h=location.hostname;
+    if((location.protocol==='http:'||location.protocol==='https:') && (h==='localhost'||h==='127.0.0.1')) return location.origin;
+  }catch(e){}
+  return 'http://localhost:8765';
+})();
+let bridgeOk=false;
+function renderBridgeChip(){
+  const c=$('bridgeChip'); if(!c) return;
+  if(bridgeOk){ c.innerHTML='<span class="dot"></span> اعلان ویندوز: فعال'; c.className='chip ok'; }
+  else { c.innerHTML='<span class="dot"></span> پل ویندوز: خاموش'; c.className='chip bad';
+    c.title='اعلان ویندوز در دسترس نیست'; }
+}
+async function bridgePing(){
+  try{
+    const ctrl=new AbortController(); const t=setTimeout(()=>ctrl.abort(),1800);
+    const r=await fetch(BRIDGE+'/ping',{cache:'no-store',signal:ctrl.signal});
+    clearTimeout(t);
+    if(r.ok){ const j=await r.json(); bridgeOk=!!j.ok; } else bridgeOk=false;
+  }catch(e){ bridgeOk=false; }
+  renderBridgeChip(); return bridgeOk;
+}
+async function sendNativeToast(title, body){
+  if(!state.settings.nativeToast) return false;
+  try{
+    const r=await fetch(BRIDGE+'/toast',{
+      method:'POST', headers:{'Content-Type':'text/plain;charset=UTF-8'},
+      body:JSON.stringify({title:title, body:body})
+    });
+    bridgeOk=r.ok; renderBridgeChip();
+    return r.ok;
+  }catch(e){ bridgeOk=false; renderBridgeChip(); return false; }
+}
+function refreshNotifChip(){
+  const c=$('notifChip');
+  if(typeof bridgeOk!=='undefined' && bridgeOk){
+    c.innerHTML='<span class="dot"></span> اعلان‌ها: فعال'; c.className='chip ok';
+    c.title='توست ویندوز از طریق پل محلی فعال است';
+    return;
+  }
+  if(!('Notification' in window)){ c.textContent='اعلان سیستم: پشتیبانی نمی‌شود'; c.className='chip bad'; return; }
+  const p=Notification.permission;
+  if(p==='granted'){ c.innerHTML='<span class="dot"></span> اعلان سیستم: فعال'; c.className='chip ok'; }
+  else if(p==='denied'){ c.innerHTML='<span class="dot"></span> اعلان سیستم: مسدود'; c.className='chip bad'; }
+  else { c.innerHTML='<span class="dot"></span> 🔔 اعلان سیستم: کلیک کنید تا اجازه بدهید'; c.className='chip pulse'; c.title='یک‌بار کلیک کنید و Allow بدهید — بعد از آن هر یادآوری اعلان واقعی می‌شود'; }
+}
+async function toggleNotifs(){
+  try{
+    if(!('Notification' in window)) throw new Error('unsupported');
+    const p=await Notification.requestPermission();
+    refreshNotifChip(); renderDiag();
+    if(p==='granted'){ notify('اعلان‌ها فعال شد ✅','از این پس یادآورها روی ویندوز نمایش داده می‌شوند.'); }
+    else {
+      toast('اجازه اعلان داده نشد','دلیل دقیق و راه‌حل در بخش «وضعیت اعلان ویندوز» پایین صفحه.','err');
+      scrollToEl($('notifBox'));
+    }
+  }catch(e){
+    toast('فعال‌سازی ناموفق','این محیط اجازه اعلان نمی‌دهد؛ دلیل دقیق در بخش «وضعیت اعلان ویندوز».','err');
+    scrollToEl($('notifBox'));
+  }
+}
+$('notifChip').addEventListener('click', toggleNotifs);
+$('soundChip').addEventListener('click',()=>{
+  state.settings.sound=!state.settings.sound; saveAll();
+  $('soundChip').textContent = state.settings.sound? '🔔 صدا: روشن':'🔕 صدا: خاموش';
+});
+
+/* =========================================================
+   ۶) ایمیل با EmailJS
+   ========================================================= */
+function logIt(msg, kind){
+  const t=new Date();
+  state.logs.unshift({ t:t.getTime(), msg, kind:kind||'' });
+  state.logs=state.logs.slice(0,40); saveAll(); renderLog();
+}
+function renderLog(){
+  const el=$('log');
+  el.innerHTML = state.logs.length? state.logs.map(l=>{
+    const d=new Date(l.t);
+    const j=toJ(d.getFullYear(),d.getMonth()+1,d.getDate());
+    return `<div class="${esc(l.kind)}">${toFa(pad2(d.getHours()))}:${toFa(pad2(d.getMinutes()))} — ${jalStr(j.jy,j.jm,j.jd)} — ${esc(l.msg)}</div>`;
+  }).join('') : '<div>هنوز رویدادی ثبت نشده است.</div>';
+}
+function mailReady(){
+  const s=state.settings;
+  return !!(s.publicKey && s.serviceId && s.templateId && s.toEmail);
+}
+function refreshEmailChip(){
+  const c=$('emailChip');
+  if(mailReady()){ c.innerHTML='<span class="dot"></span> ایمیل: آماده'; c.className='chip ok'; }
+  else { c.innerHTML='<span class="dot"></span> ایمیل: تنظیم نشده'; c.className='chip bad'; }
+}
+async function sendEmail(rem, alert, lateMin){
+  const s=state.settings;
+  if(!mailReady()){ logIt('ایمیل ارسال نشد: تنظیمات EmailJS کامل نیست','err'); return false; }
+  const payload={
+    service_id:s.serviceId, template_id:s.templateId, user_id:s.publicKey,
+    template_params:{
+      to_email:s.toEmail,
+      subject:`⏰ یادآور: ${rem.title} — ${alertLabel(alert)}`,
+      title:rem.title,
+      when_fa:jalFull(rem.jy,rem.jm,rem.jd)+' ساعت '+toFa(pad2(rem.hh))+':'+toFa(pad2(rem.mm)),
+      when_iso:new Date(tsOf(rem)).toISOString(),
+      alert_label:alertLabel(alert),
+      note:rem.note||'—',
+      late_note: lateMin>1? `(حدود ${humanDelta(lateMin*60000)} تأخیر داشت؛ برنامه در آن لحظه باز نبود)`:''
+    }
+  };
+  try{
+    const res=await fetch('https://api.emailjs.com/api/v1.0/email/send',{
+      method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)
+    });
+    if(res.ok){ logIt(`ایمیل یادآوری «${rem.title}» ارسال شد`,'ok'); return true; }
+    const txt=await res.text();
+    logIt('خطای EmailJS: '+txt.slice(0,140),'err'); return false;
+  }catch(e){ logIt('ارسال ایمیل ناموفق (اینترنت/CORS): '+e.message,'err'); return false; }
+}
+
+/* =========================================================
+   ۷) موتور یادآوری
+   ========================================================= */
+const CATCHUP_MS = 6*3600*1000;   // اگر برنامه بسته/خاموش بود، تا ۶ ساعت بعد جبران می‌کند
+function fire(rem, alert, atTs, nowTs){
+  const lateMin=Math.round((nowTs-atTs)/60000);
+  const whenTxt=jalFull(rem.jy,rem.jm,rem.jd)+' — ساعت '+toFa(pad2(rem.hh))+':'+toFa(pad2(rem.mm));
+  const lateTxt= lateMin>=2? ` (${humanDelta(lateMin*60000)} تأخیر)`:'';
+  const body=`${alertLabel(alert)} — ${whenTxt}${lateTxt}${rem.note? ' · '+rem.note:''}`;
+  const sysOk = state.settings.browserNotif ? notify('⏰ '+rem.title, body) : false;
+  showAlarmBar(rem.title, body, rem, alert);
+  flashTitle(rem.title);
+  beep(); setTimeout(beep, 1400); startAlarmLoop();
+  const popOk = state.settings.popToast!==false ? popToast('⏰ '+rem.title, body) : false;
+  if(!popOk && state.settings.popToast!==false && !popBlockedShown){
+    popBlockedShown=true;
+    logIt('پنجرهٔ اعلان باز نشد — مرورگر پاپ‌آپ را مسدود کرده؛ بنر قرمز نمایش داده شد','err');
+  }
+  logIt(`یادآوری «${rem.title}» (${alertLabel(alert)})${lateMin>=2?' با '+humanDelta(lateMin*60000)+' تأخیر':''} — اعلان مرورگر: ${sysOk?'✓':(state.settings.browserNotif?'✗':'خاموش')}`, sysOk?'ok':'');
+  if(rem.email) sendEmail(rem, alert, lateMin);
+}
+function tick(){
+  const nowTs=Date.now(); let dirty=false;
+  state.reminders.forEach(r=>{
+    if(r.done) return;
+    const base=tsOf(r);
+    alertsOf(r).forEach((a,i)=>{
+      const key=r.id+'#'+i;
+      if(state.fired[key]) return;
+      const at=base-minutesOf(a)*60000;
+      if(nowTs>=at && nowTs-at<=CATCHUP_MS){ state.fired[key]=nowTs; dirty=true; fire(r,a,at,nowTs); }
+    });
+  });
+  if(dirty) saveAll();
+  renderList(); renderNextInfo(); scheduleNext();
+}
+/* تایمر دقیق برای نزدیک‌ترین یادآوری (به‌جای تکیه بر بازه‌ی ۲۰ ثانیه‌ای) */
+let nextTimer=null;
+function scheduleNext(){
+  clearTimeout(nextTimer);
+  const nowTs=Date.now(); let best=Infinity;
+  state.reminders.forEach(r=>{
+    if(r.done) return;
+    alertsOf(r).forEach((a,i)=>{
+      if(state.fired[r.id+'#'+i]) return;
+      const at=tsOf(r)-minutesOf(a)*60000;
+      if(at>nowTs-2000 && at<best) best=at;
+    });
+  });
+  if(best<Infinity){
+    const ms=Math.min(Math.max(250, best-nowTs+150), 1800000);
+    nextTimer=setTimeout(()=>{ tick(); }, ms);
+  }
+}
+function renderNextInfo(){
+  const nowTs=Date.now(); let best=Infinity, txt='';
+  state.reminders.forEach(r=>{
+    if(r.done) return;
+    alertsOf(r).forEach((a,i)=>{
+      if(state.fired[r.id+'#'+i]) return;
+      const at=tsOf(r)-minutesOf(a)*60000;
+      if(at>nowTs && at<best){ best=at; txt=`${r.title} — ${alertLabel(a)} — ${humanDelta(at-nowTs)} دیگر`; }
+    });
+  });
+  $('nextInfo').innerHTML = txt
+    ? `⏭️ یادآوری بعدی: <b>${esc(txt)}</b>`
+    : '⏭️ یادآوری پیش‌رویی در انتظار نیست.';
+  $('nextInfo').innerHTML += '<span style="color:var(--dim)"> · برای دیدن جزئیات هر یادآور روی کارت آن کلیک کنید 👆</span>';
+}
+
+/* =========================================================
+   ۸) فرم: تقویم، ساعت، چیپ‌ها
+   ========================================================= */
+function fillSelect(el, from, to, sel){
+  el.innerHTML='';
+  for(let i=from;i<=to;i++){
+    const o=document.createElement('option'); o.value=i; o.textContent=toFa(pad2(i));
+    if(i===sel) o.selected=true; el.appendChild(o);
+  }
+}
+function renderCal(){
+  const y=form.calYear, m=form.calMonth;
+  $('calTitle').textContent=`${MONTHS[m-1]} ${toFa(y)}`;
+  $('dowRow').innerHTML=DOWS.map(d=>`<div class="dow">${d}</div>`).join('');
+  const len=monthLen(y,m);
+  const firstDow=dowIndexJ(y,m,1);
+  let html='';
+  for(let i=0;i<firstDow;i++) html+='<button class="day empty" disabled></button>';
+  for(let d=1;d<=len;d++){
+    const dIdx=(firstDow+d-1)%7;
+    const off=dIdx===6;
+    const cls=['day']; if(off) cls.push('off');
+    if(y===form.jy && m===form.jm && d===form.jd) cls.push('sel');
+    else if(y===nj.jy && m===nj.jm && d===nj.jd) cls.push('today');
+    html+=`<button class="${cls.join(' ')}" data-jd="${d}">${toFa(d)}</button>`;
+  }
+  $('calGrid').innerHTML=html;
+  $('calGrid').querySelectorAll('button[data-jd]').forEach(b=>{
+    b.addEventListener('click',()=>{ form.jd=+b.dataset.jd; form.jy=y; form.jm=m; renderCal(); updateSelLine(); });
+  });
+}
+function updateSelLine(){
+  $('selDate').textContent=jalFull(form.jy,form.jm,form.jd);
+  const g=toG(form.jy,form.jm,form.jd);
+  const ms=new Date(g.gy,g.gm-1,g.gd,form.hh,form.mm,0,0).getTime()-Date.now();
+  const when= ms>=0? `⏳ ${humanDelta(ms)} مانده` : `گذشته (${humanDelta(ms)} قبل)`;
+  $('planPreview').textContent='یادآوری‌ها: '+alertsOf({alerts:form.alerts}).map(alertLabel).join(' + ')+' — '+when;
+  /* هشدار: یادآوری‌هایی که زمانشان گذشته است، ارسال نمی‌شوند */
+  const evTs=new Date(g.gy,g.gm-1,g.gd,form.hh,form.mm,0,0).getTime();
+  const pastNow=alertsOf({alerts:form.alerts}).filter(a=>evTs-minutesOf(a)*60000 < Date.now()-6*3600*1000);
+  if(pastNow.length){
+    $('planPreview').innerHTML += ` <span style="color:var(--warn)">⚠️ ${pastNow.map(alertLabel).join('، ')} گذشته است و ارسال نمی‌شود</span>`;
+  }
+}
+function renderPresets(){
+  $('presets').innerHTML=PRESETS.map(([v,u])=>{
+    const on=form.alerts.some(a=>a.unit===u&&a.value===v);
+    return `<button class="p-chip ${on?'on':''}" data-u="${u}" data-v="${v}">${toFa(v)} ${unitFa[u]} قبل</button>`;
+  }).join('');
+  $('presets').querySelectorAll('.p-chip').forEach(b=>{
+    b.addEventListener('click',()=>{
+      const u=b.dataset.u, v=+b.dataset.v;
+      const i=form.alerts.findIndex(a=>a.unit===u&&a.value===v);
+      if(i>=0) form.alerts.splice(i,1); else form.alerts.push({unit:u,value:v});
+      form.alerts.sort((a,b2)=>minutesOf(b2)-minutesOf(a));
+      renderPresets(); renderCustChips(); updateSelLine();
+    });
+  });
+}
+function renderCustChips(){
+  const custom=form.alerts.filter(a=>!PRESET_KEYS.has(a.value+a.unit));
+  $('customs').innerHTML=custom.map(a=>
+    `<button class="p-chip on" data-u="${a.unit}" data-v="${a.value}">✕ ${alertLabel(a)}</button>`).join('');
+  $('customs').querySelectorAll('.p-chip').forEach(b=>{
+    b.addEventListener('click',()=>{
+      const u=b.dataset.u, v=+b.dataset.v;
+      const i=form.alerts.findIndex(a=>a.unit===u&&a.value===v);
+      if(i>=0) form.alerts.splice(i,1);
+      renderPresets(); renderCustChips(); updateSelLine();
+    });
+  });
+}
+
+/* جدا کردن نام شرکت از شمارهٔ سند: «پارس صنعت زند — 1800…046» */
+function splitTitle(t){
+  const str=String(t||'');
+  const i=str.lastIndexOf(' — ');
+  if(i>2){
+    const a=str.slice(0,i).trim(), b=str.slice(i+3).trim();
+    if(/\d{3,}/.test(b) && b.length>=4 && a.length>=2) return {name:a, ref:b};
+  }
+  return {name:str, ref:''};
+}
+function applyViewSettings(){
+  const listEl=$('list');
+  if(!listEl) return;
+  [1,2,3,4].forEach(n=>listEl.classList.remove('fs-'+n));
+  listEl.classList.add('fs-'+(state.settings.fontSize||2));
+  $('viewBtn').textContent = state.settings.view==='table'? '🔲 جدول' : '🗂 کارت';
+}
+const sel=new Set();          /* شناسه‌های انتخاب‌شده برای حذف گروهی */
+function updateSelCount(){ const el=$('selCount'); if(el) el.textContent = sel.size? `${toFa(sel.size)} انتخاب‌شده` : ''; }
+function deleteIds(ids, label){
+  if(!ids.length){ toast('چیزی انتخاب نشده','اول ردیف‌ها را تیک بزنید.','err'); return; }
+  if(!confirm(`${label}: ${toFa(ids.length)} یادآور حذف شود؟ این کار برگشت‌پذیر نیست.`)) return;
+  state.reminders=state.reminders.filter(r=>!ids.includes(r.id));
+  ids.forEach(id=>{ Object.keys(state.fired).forEach(k=>{ if(k.startsWith(id+'#')) delete state.fired[k]; }); sel.delete(id); });
+  saveAll(); renderList();
+  logIt(`${toFa(ids.length)} یادآور حذف شد`,'');
+  toast(`${toFa(ids.length)} یادآور حذف شد`,'','ok');
+}
+
+/* =========================================================
+   ۹) لیست یادآورها
+   ========================================================= */
+function renderList(){
+  let items=state.reminders.slice().sort((a,b)=>{
+    if(!!a.done!==!!b.done) return a.done?1:-1;
+    return tsOf(a)-tsOf(b);
+  });
+  const total=items.length, activeN=items.filter(r=>!r.done).length;
+  /* فیلتر و جستجو */
+  const q=($('searchBox').value||'').trim().toLowerCase();
+  const f=($('filterSel').value||'active');
+  const nowTs=Date.now(), endToday=new Date(); endToday.setHours(23,59,59,999);
+  if(f==='active') items=items.filter(r=>!r.done);
+  else if(f==='done') items=items.filter(r=>r.done);
+  else if(f==='today') items=items.filter(r=>tsOf(r)>=nowTs-86400000 && tsOf(r)<=endToday.getTime());
+  else if(f==='week') items=items.filter(r=>tsOf(r)>=nowTs && tsOf(r)<=nowTs+7*86400000);
+  if(q){
+    items=items.filter(r=>((r.title||'')+' '+(r.note||'')+' '+(r.tag||'')+' '+(r.amount||'')).toLowerCase().includes(q));
+  }
+  $('listCount').textContent = total? `${toFa(activeN)} فعال از ${toFa(total)}` : '';
+  const el=$('list');
+  if(!items.length){
+    el.innerHTML = total
+      ? '<div class="empty-state"><span class="big">🔍</span>چیزی با این فیلتر/جستجو پیدا نشد.<br>فیلتر را روی «همه» بگذارید یا عبارت دیگری بنویسید.</div>'
+      : '<div class="empty-state"><span class="big">🗓️</span>هنوز یادآوری نساخته‌اید.<br>از فرم کنار تاریخ را انتخاب کنید، یا از بخش «ورود گروهی از اکسل» یک‌جا وارد کنید.</div>';
+    return;
+  }
+  applyViewSettings();
+
+  /* ---------- نمای جدولی ---------- */
+  if(state.settings.view==='table'){
+    const rows=items.map(r=>{
+      const base=tsOf(r), late=!r.done && base<nowTs, diff=base-nowTs;
+      const {name,ref}=splitTitle(r.title);
+      const countTxt = r.done? 'انجام شد' : (diff>=0? humanDelta(diff)+' مانده' : humanDelta(diff)+' گذشته');
+      return `<tr class="${r.done?'done':''}" data-card="${r.id}">
+        <td><input type="checkbox" class="selbox" data-sel="${r.id}" ${sel.has(r.id)?'checked':''}></td>
+        <td class="t-name">${esc(name)}${r.tag? ` <span class="tag-pill">${esc(r.tag)}</span>`:''}
+            ${ref? `<div class="t-ref">شماره: ${esc(ref)}</div>`:''}</td>
+        <td class="t-date">${jalStr(r.jy,r.jm,r.jd)}<div class="t-ref">${DOWS[dowIndexJ(r.jy,r.jm,r.jd)]} · ${toG(r.jy,r.jm,r.jd).gy}-${pad2(toG(r.jy,r.jm,r.jd).gm)}-${pad2(toG(r.jy,r.jm,r.jd).gd)}</div></td>
+        <td style="white-space:nowrap">${toFa(pad2(r.hh))}:${toFa(pad2(r.mm))}</td>
+        <td class="t-amount">${esc(r.amount||'—')}</td>
+        <td class="t-count ${late?'past':''}">${countTxt}${r.email? ' 📧':''}</td>
+        <td class="t-acts">
+          <button class="icon-btn" data-done="${r.id}" title="انجام شد">${r.done?'↩️':'✅'}</button>
+          <button class="icon-btn" data-edit="${r.id}" title="تمدید سررسید">📆</button>
+          <button class="icon-btn danger" data-del="${r.id}" title="حذف">🗑️</button>
+        </td>
+      </tr>`;
+    }).join('');
+    el.innerHTML=`<table class="list-table">
+      <thead><tr><th style="width:28px"></th><th>نام شرکت / عنوان</th><th>سررسید (شمسی)</th><th>ساعت</th><th>مبلغ</th><th>وضعیت</th><th></th></tr></thead>
+      <tbody>${rows}</tbody></table>`;
+    wireListItems(el, items);
+    return;
+  }
+
+  el.innerHTML=items.map(r=>{
+    const base=tsOf(r), late=!r.done && base<nowTs, diff=base-nowTs;
+    const countTxt = r.done? 'انجام شد' : (diff>=0? humanDelta(diff)+' مانده' : humanDelta(diff)+' گذشته');
+    const {name,ref}=splitTitle(r.title);
+    return `<div class="item ${r.done?'done':''} ${late?'late':''}" data-card="${r.id}" title="برای دیدن جزئیات کلیک کنید">
+      <div class="bar"></div>
+      <input type="checkbox" class="selbox" data-sel="${r.id}" title="انتخاب برای حذف گروهی" ${sel.has(r.id)?'checked':''}>
+      <div class="datebox"><div class="d">${toFa(r.jd)}</div><div class="m">${MONTHS[r.jm-1]}</div></div>
+      <div class="i-main">
+        <div class="i-title"><span class="i-title-text">${esc(name)}</span>${r.tag? ` <span class="tag-pill">${esc(r.tag)}</span>`:''}</div>
+        ${ref? `<div class="i-ref">شماره: ${esc(ref)}</div>`:''}
+        <div class="i-date">📅 ${jalFull(r.jy,r.jm,r.jd)} · <span class="clock">${toFa(pad2(r.hh))}:${toFa(pad2(r.mm))}</span></div>
+        <div class="i-meta">
+          ${r.amount? `<span class="money">💰 ${esc(r.amount)}</span>`:''}
+          <span class="${late?'past':''}">🕒 ${countTxt}</span>
+          ${r.email? '<span title="ایمیل روشن">📧</span>':''}
+          ${(r.history&&r.history.length)? `<span title="تعداد تمدید">📆 ${toFa(r.history.length)}</span>`:''}
+        </div>
+      </div>
+      <div class="i-act">
+        <div class="i-btns">
+          <button class="icon-btn" data-done="${r.id}" title="${r.done?'بازگردانی به فعال':'علامت‌گذاری به‌عنوان انجام‌شده'}">${r.done?'↩️':'✅'}</button>
+          <button class="icon-btn" data-edit="${r.id}" title="تمدید سررسید / ویرایش">📆</button>
+          <button class="icon-btn danger" data-del="${r.id}" title="حذف این یادآور">🗑️</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  wireListItems(el, items);
+}
+
+function wireListItems(el){
+  el.querySelectorAll('[data-del]').forEach(b=>b.addEventListener('click',e=>{ e.stopPropagation();
+    const id=b.dataset.del; const r=state.reminders.find(x=>x.id===id);
+    if(!confirm(`یادآور «${r? r.title:''}» حذف شود؟`)) return;
+    deleteIds([id],'حذف یادآور');
+  }));
+  el.querySelectorAll('[data-done]').forEach(b=>b.addEventListener('click',e=>{ e.stopPropagation();
+    const r=state.reminders.find(x=>x.id===b.dataset.done); if(!r) return;
+    r.done=!r.done; saveAll(); renderList();
+  }));
+  el.querySelectorAll('[data-edit]').forEach(b=>b.addEventListener('click',e=>{ e.stopPropagation(); startEdit(b.dataset.edit); }));
+  el.querySelectorAll('[data-card]').forEach(c=>c.addEventListener('click',e=>{
+    if(e.target.closest('.icon-btn')||e.target.closest('.selbox')) return;
+    openDetail(c.dataset.card);
+  }));
+  el.querySelectorAll('[data-sel]').forEach(cb=>cb.addEventListener('change',e=>{
+    e.stopPropagation();
+    if(cb.checked) sel.add(cb.dataset.sel); else sel.delete(cb.dataset.sel);
+    updateSelCount();
+    const all=[...el.querySelectorAll('[data-sel]')];
+    $('selAll').checked = all.length>0 && all.every(x=>x.checked);
+  }));
+  const ids=new Set(state.reminders.map(r=>r.id));
+  [...sel].forEach(id=>{ if(!ids.has(id)) sel.delete(id); });
+  const boxes=[...el.querySelectorAll('[data-sel]')];
+  $('selAll').checked = boxes.length>0 && boxes.every(x=>x.checked);
+  updateSelCount();
+}
+
+/* =========================================================
+   ۹٫۴) پنجرهٔ جزئیات یادآور (کلیک روی کارت)
+   ========================================================= */
+function openDetail(id){
+  const r=state.reminders.find(x=>x.id===id); if(!r) return;
+  const g=toG(r.jy,r.jm,r.jd);
+  const ts=tsOf(r), diff=ts-Date.now();
+  const stateTxt = r.done? 'انجام‌شده' : (diff>=0? 'فعال' : 'گذشته');
+  const countTxt = r.done? '—' : (diff>=0? humanDelta(diff)+' مانده' : humanDelta(diff)+' گذشته');
+  const alerts=alertsOf(r).map(a=>`<span class="tag"${minutesOf(a)===0?' style="color:#8ef0b4;border-color:rgba(74,222,128,.4);background:rgba(74,222,128,.1)"':''}>${alertLabel(a)}</span>`).join('');
+  const nextAt=(function(){ const now=Date.now(); let b=null;
+    alertsOf(r).forEach((a,i)=>{ if(state.fired[r.id+'#'+i]) return;
+      const at=tsOf(r)-minutesOf(a)*60000; if(at>=now && (!b||at<b.at)) b={at,a}; });
+    return b? `${alertLabel(b.a)} — ${humanDelta(b.at-now)} دیگر` : (r.done? '—' : 'یادآوری بعدی در انتظار نیست'); })();
+  const hist=(r.history||[]).slice().reverse().map((h,i)=>{
+    const d=new Date(h.at); const hd=toJ(d.getFullYear(),d.getMonth()+1,d.getDate());
+    return `<div>${i===0?'آخرین تمدید':'تمدید'} — ${jalStr(h.from.jy,h.from.jm,h.from.jd)} ← ${jalStr(h.to.jy,h.to.jm,h.to.jd)}
+      <span style="color:var(--dim)">(ثبت: ${jalStr(hd.jy,hd.jm,hd.jd)} ساعت ${toFa(pad2(d.getHours()))}:${toFa(pad2(d.getMinutes()))})</span></div>`;
+  }).join('');
+
+  $('dmCard').innerHTML=`
+    <div class="dm-top">
+      <div class="dm-date"><div class="d">${toFa(r.jd)}</div><div class="m">${MONTHS[r.jm-1]}</div></div>
+      <div class="dm-head">
+        <div class="dm-title">${esc(r.title)}</div>
+        <div class="dm-sub">
+          ${DOWS[dowIndexJ(r.jy,r.jm,r.jd)]} — ساعت ${toFa(pad2(r.hh))}:${toFa(pad2(r.mm))}
+          ${r.tag? `<span class="dm-badge">${esc(r.tag)}</span>`:''}
+          ${r.imported? '<span class="dm-badge">واردشده از اکسل</span>':''}
+        </div>
+      </div>
+      <button class="dm-x" data-dm-close title="بستن">✕</button>
+    </div>
+
+    <div class="dm-grid">
+      <div class="dm-cell"><div class="k">تاریخ سررسید (شمسی)</div><div class="v">${jalFull(r.jy,r.jm,r.jd)}</div></div>
+      <div class="dm-cell"><div class="k">تاریخ میلادی</div><div class="v">${g.gy}-${pad2(g.gm)}-${pad2(g.gd)}</div></div>
+      <div class="dm-cell"><div class="k">ساعت</div><div class="v">${toFa(pad2(r.hh))}:${toFa(pad2(r.mm))}</div></div>
+      <div class="dm-cell"><div class="k">وضعیت</div><div class="v">${stateTxt}${r.done?'':' — '+countTxt}</div></div>
+      ${r.amount? `<div class="dm-cell wide"><div class="k">مبلغ</div><div class="v" style="color:#8ef0b4">${esc(r.amount)}</div></div>`:''}
+      ${r.note? `<div class="dm-cell wide"><div class="k">توضیحات</div><div class="v" style="font-weight:500;white-space:pre-wrap">${esc(r.note)}</div></div>`:''}
+    </div>
+
+    <div class="dm-sec"><h4>یادآوری‌های پیشاپیش
+        <button class="btn sm ghost" data-dm-alerts="${r.id}" style="float:left;font-size:11.5px;padding:4px 9px">⏰ تنظیم</button></h4>
+      <div class="i-alerts">${alerts}
+      ${r.email? '<span class="tag mail">📧 ایمیل روشن</span>':''}</div>
+      <div class="hint" style="margin-top:6px">⏭️ اعلان بعدی: <b>${nextAt}</b></div>
+      ${(r.alerts&&r.alerts.length)?'':'<div class="hint" style="margin-top:4px">هیچ پیش‌یادآوری ندارد؛ روی «⏰ تنظیم» بزنید تا مثلاً ۱ روز یا ۳ ساعت قبل هم خبردار شوید.</div>'}
+    </div>
+
+    ${hist? `<div class="dm-sec"><h4>سابقهٔ تمدید (${toFa(r.history.length)} بار)</h4><div class="dm-hist">${hist}</div></div>`:''}
+
+    <div class="dm-acts">
+      <button class="btn primary" data-dm-edit="${r.id}">📆 تمدید سررسید / ویرایش</button>
+      <button class="btn ghost" data-dm-done="${r.id}">${r.done? '↩️ بازگردانی':'✅ انجام شد'}</button>
+      <button class="btn danger" data-dm-del="${r.id}">🗑️ حذف</button>
+    </div>`;
+
+  $('detailModal').classList.add('show');
+
+  $('dmCard').querySelector('[data-dm-close]').onclick=closeDetail;
+  const alBtn=$('dmCard').querySelector('[data-dm-alerts]');
+  if(alBtn) alBtn.onclick=()=>openAlertEditor([r.id]);
+  const editBtn=$('dmCard').querySelector('[data-dm-edit]');
+  if(editBtn) editBtn.onclick=()=>{ closeDetail(); startEdit(r.id); };
+  $('dmCard').querySelector('[data-dm-done]').onclick=()=>{ r.done=!r.done; saveAll(); renderList(); openDetail(r.id); };
+  $('dmCard').querySelector('[data-dm-del]').onclick=()=>{
+    if(!confirm(`یادآور «${r.title}» حذف شود؟`)) return;
+    closeDetail(); deleteIds([r.id],'حذف یادآور');
+  };
+}
+/* --- تنظیم یادآوری‌های پیشاپیش برای یک یا چند یادآور --- */
+function openAlertEditor(ids){
+  const rs=(ids||[]).map(i=>state.reminders.find(r=>r.id===i)).filter(Boolean);
+  if(!rs.length){ toast('چیزی انتخاب نشده','اول ردیف‌ها را تیک بزنید یا «انتخاب همه» را بزنید.','err'); return; }
+  let sel = rs.length===1
+    ? (rs[0].alerts||[]).map(a=>({unit:a.unit,value:a.value}))
+    : imp.alerts.map(a=>({unit:a.unit,value:a.value}));
+  const paint=()=>{
+    const chips=IMP_PRESETS.map(([v,u])=>{
+      const on=sel.some(a=>a.unit===u&&a.value===v);
+      return `<button class="p-chip ${on?'on':''}" data-u="${u}" data-v="${v}">${toFa(v)} ${unitFa[u]} قبل</button>`;
+    }).join('');
+    const names = rs.length===1 ? `«${esc(rs[0].title)}»` : `${toFa(rs.length)} یادآور انتخاب‌شده`;
+    $('amCard').innerHTML=`
+      <h3>⏰ یادآوری‌های پیشاپیش</h3>
+      <div class="hint">برای ${names} — هر تعداد که بخواهید انتخاب کنید. روی چیپ‌های روشن دوباره بزنید تا برداشته شود.</div>
+      <div class="presets" id="amPresets">${chips}</div>
+      ${sel.length? `<div class="hint">انتخاب‌شده: <b>${sel.slice().sort((a,b)=>minutesOf(b)-minutesOf(a)).map(a=>alertLabel(a)).join(' + ')}</b></div>`
+                  : '<div class="hint" style="color:#ffb3c0">هیچ پیش‌یادآوری انتخاب نشده — فقط سرِ ساعت سررسید اعلان می‌آید.</div>'}
+      <div class="modal-actions" style="margin-top:14px">
+        <button class="btn sm ghost" data-am-cancel>لغو</button>
+        <button class="btn sm" data-am-clear>پاک کردن همه</button>
+        <button class="btn primary" data-am-save>💾 ذخیره</button>
+      </div>`;
+    $('amPresets').querySelectorAll('.p-chip').forEach(b=>b.addEventListener('click',()=>{
+      const u=b.dataset.u, v=+b.dataset.v;
+      const i=sel.findIndex(a=>a.unit===u&&a.value===v);
+      if(i>=0) sel.splice(i,1); else sel.push({unit:u,value:v});
+      sel.sort((a,b2)=>minutesOf(b2)-minutesOf(a));
+      paint();
+    }));
+    $('amCard').querySelector('[data-am-cancel]').onclick=closeAlertEditor;
+    $('amCard').querySelector('[data-am-clear]').onclick=()=>{ sel=[]; paint(); };
+    $('amCard').querySelector('[data-am-save]').onclick=()=>{
+      rs.forEach(r=>{ r.alerts=sel.map(a=>({unit:a.unit,value:a.value})); });
+      saveAll(); markDirty(); renderList();
+      const one=rs.length===1?rs[0].id:null;
+      closeAlertEditor();
+      if(one && $('detailModal').classList.contains('show')) openDetail(one);
+      toast('ذخیره شد ✅', sel.length
+        ? `${toFa(sel.length)} پیش‌یادآور برای ${toFa(rs.length)} یادآور تنظیم شد.`
+        : 'پیش‌یادآورها پاک شد — فقط سرِ سررسید اعلان می‌آید.', 'ok');
+      tick();
+    };
+  };
+  paint();
+  $('alertModal').classList.add('show');
+}
+function closeAlertEditor(){ $('alertModal').classList.remove('show'); }
+
+/* --- قفل PIN --- */
+const pinHash=s=>{ let h=5381; for(let i=0;i<s.length;i++) h=((h*33)^s.charCodeAt(i))>>>0; return 'p'+h.toString(36); };
+function renderPinStatus(){
+  const el=$('pinStatus'); if(!el) return;
+  el.innerHTML = state.settings.pin
+    ? '✅ قفل روشن است — هر بار که صفحه باز شود PIN پرسیده می‌شود.'
+    : '⚪ قفل خاموش است — هر کسی که لینک را باز کند لیست را می‌بیند.';
+}
+function lockNow(){ $('lockScreen').classList.add('show'); setTimeout(()=>{ try{ $('lkPin').focus(); }catch(e){} }, 120); }
+function unlockNow(){ try{ sessionStorage.setItem('yd_unlocked','1'); }catch(e){} $('lockScreen').classList.remove('show'); tick(); }
+function tryUnlock(){
+  const v=($('lkPin').value||'').trim();
+  if(!v) return;
+  if(pinHash(v)===state.settings.pin){ $('lkErr').textContent=''; $('lkPin').value=''; unlockNow(); }
+  else { $('lkErr').textContent='PIN درست نیست.'; $('lkPin').value=''; try{ $('lkPin').focus(); }catch(e){} }
+}
+
+/* --- راهنمای سریع داخل خود برنامه --- */
+function openHelp(){
+  const v=APP_VERSION;
+  $('hmCard').innerHTML=`
+    <div class="dm-top" style="margin-bottom:6px">
+      <div class="dm-head"><div class="dm-title">📖 راهنمای سریع — نسخهٔ ${toFa(v)}</div>
+      <div class="dm-sub">همه‌چیز در همین یک فایل است؛ هیچ فایل یا نصب دیگری لازم نیست.</div></div>
+      <button class="dm-x" data-hm-close title="بستن">✕</button>
+    </div>
+
+    <h4>۱) شروع</h4>
+    <ul>
+      <li>فایل <code>yadavar.html</code> را دابل‌کلیک کنید؛ در کروم یا اج باز می‌شود. همین.</li>
+      <li>تاریخ و ساعت یادآور را از تقویم شمسی انتخاب کنید، روی چیپ‌های «قبل» بزنید و <b>افزودن یادآور</b>.</li>
+      <li>هر یادآور همیشه <b>سرِ موعد</b> اعلان می‌دهد؛ چیپ‌های «قبل» برای خبردار شدن زودتر هستند (تا ۳۰ روز قبل).</li>
+    </ul>
+
+    <h4>۲) ذخیره (مهم)</h4>
+    <ul>
+      <li>داده‌ها داخل همین فایل و در مرورگر ذخیره می‌شوند. بعد از هر تغییر، چیپ <b>💾 ذخیره</b> بالای صفحه را بزنید تا فایل با داده‌های جدید ساخته شود و جای فایل قبلی بگذارید.</li>
+      <li>در کروم/اج روی ویندوز اگر یک‌بار فایل را با دکمهٔ ذخیره انتخاب کنید، بعد از آن <b>خودکار</b> در همان فایل نوشته می‌شود (چیپ سبز «ذخیره شد ✓»).</li>
+    </ul>
+
+    <h4>۳) ورود گروهی از اکسل</h4>
+    <ul>
+      <li>محدوده را در اکسل انتخاب و Ctrl+C کنید، در کادر بچسبانید، <b>پردازش</b> و بعد <b>افزودن</b>. فایل <code>.xlsx</code> و <code>.csv</code> هم پشتیبانی می‌شود (فایل قدیمی <code>.xls</code> را در اکسل Save As کنید).</li>
+      <li>در «تنظیمات پیش‌فرض ورود» پیش‌یادآورها از قبل انتخاب شده‌اند؛ اگر همه را بردارید، هشدار می‌دهد.</li>
+      <li>برای ردیف‌های قبلی: تیک بزنید یا «انتخاب همه» → دکمهٔ <b>⏰ پیش‌یادآور انتخاب‌شده‌ها</b>؛ یا روی هر کارت → <b>⏰ تنظیم</b>.</li>
+    </ul>
+
+    <h4>۴) اعلان‌ها</h4>
+    <ul>
+      <li>در حالت دابل‌کلیک (<code>file://</code>) مرورگر اجازهٔ اعلان سیستمی نمی‌دهد؛ ولی <b>پنجرهٔ اعلان کوچک گوشهٔ صفحه + بنر قرمز + بوق تکرارشونده + چشمک عنوان</b> کار می‌کند. اگر پنجره باز نشد، اجازهٔ پاپ‌آپ را در نوار آدرس بدهید.</li>
+      <li>اگر چیپ اعلان زرد و چشمک‌زن است، یک‌بار روی آن بزنید و <b>Allow</b> بدهید.</li>
+      <li>برای اعلان ویندوز در گوشهٔ صفحه: همین یک فایل را در <b>Netlify Drop</b> یا <b>GitHub Pages</b> بگذارید و از آدرس https باز کنید.</li>
+      <li>دکمهٔ <b>🔔 تست کامل اعلان</b> در «وضعیت اعلان» هر سه راه را همان لحظه تست می‌کند.</li>
+    </ul>
+
+    <h4>۵) وقتی کامپیوتر خاموش است</h4>
+    <ul>
+      <li>در بخش «همگام‌سازی خودکار ابری» آدرس Web App گوگل را یک‌بار بگذارید؛ ایمیل‌های یادآوری از گوگل ارسال می‌شوند و به روشن بودن سیستم نیاز ندارد.</li>
+      <li>فایل <code>.ics</code> و اسکریپت آمادهٔ گوگل هم در همان بخش با یک دکمه ساخته می‌شوند.</li>
+    </ul>
+
+    <h4>۶) آنلاین (لینک https — بدون هیچ فایل)</h4>
+    <ul>
+      <li>همین یک فایل را در <b>app.netlify.com/drop</b> رها کنید (بدون ثبت‌نام) یا در <b>GitHub Pages</b> / <b>Cloudflare Pages</b> بگذارید؛ یک لینک https می‌گیرید که هر جا باز می‌شود.</li>
+      <li>از لینک آنلاین، اعلان ویندوز/اندروید کار می‌کند: یک بر روی چیپ اعلان بزنید و <b>Allow</b> بدهید (یا در حملهٔ اول خودش می‌پرسد).</li>
+      <li>روی لینک آنلاین، داده‌ها <b>خودکار</b> در همان مرورگر ذخیره می‌شوند (چیپ «☁️ ذخیرهٔ خودکار»). برای انتقال بین دستگاه‌ها یا گم‌نشدن داده: <b>⬇️ پشتیبان‌گیری (JSON)</b> و بعد <b>⬆️ بازگردانی</b>.</li>
+      <li>برای ایمیل وقتی سیستم خاموش است، آدرس ابری (بخش همگام‌سازی) را هم بگذارید.</li>
+      <li>برای اینکه <b>فقط خودتان</b> لیست را ببینید: در تنظیمات «🔒 قفل با PIN» یک PIN ۴ تا ۸ رقمی بگذارید.</li>
+      <li><b>آپلود روی GitHub:</b> یک Repository بسازید (Public) → Add file → Upload files → فایل <code>yadavar.html</code> را رها کنید → Commit.
+          بعد Settings → Pages → Branch: <b>main</b> و پوشه: <b>/ (root)</b> → Save.
+          یک دقیقه بعد لینک <code>https://نام‌کاربری.github.io/نام‌ریپو/yadavar.html</code> آماده است.
+          (لینک Pages عمومی است؛ چون هیچ داده‌ای داخل فایل نیست و یادآورها در مرورگر خودتان می‌مانند، اطلاعات شخصی جایی نمی‌رود. برای قفل واقعی، PIN بگذارید.)</li>
+    </ul>
+
+    <h4>۷) نسخه و بازگردانی</h4>
+    <ul>
+      <li>شمارهٔ نسخه پایین صفحه است (الان <b>${toFa(v)}</b>).</li>
+      <li>اگر نسخهٔ جدید گرفتی، فایل قدیمی را با <b>⬆️ بازگردانی (JSON)</b> انتخاب کن؛ داده‌ها خودکار پیدا می‌شوند (فایل <code>.html</code> قدیمی یا <code>.json</code>).</li>
+    </ul>
+
+    <div class="modal-actions" style="margin-top:16px"><button class="btn primary" data-hm-close>فهمیدم، ببند</button></div>`;
+  $('helpModal').classList.add('show');
+  $('hmCard').querySelectorAll('[data-hm-close]').forEach(b=>b.onclick=closeHelp);
+}
+function closeHelp(){ $('helpModal').classList.remove('show'); }
+$('helpChip').addEventListener('click',openHelp);
+$('helpModal').addEventListener('click',e=>{ if(e.target.id==='helpModal') closeHelp(); });
+$('alertModal').addEventListener('click',e=>{ if(e.target.id==='alertModal') closeAlertEditor(); });
+
+function closeDetail(){ $('detailModal').classList.remove('show'); }
+$('detailModal').addEventListener('click',e=>{ if(e.target.id==='detailModal') closeDetail(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ closeDetail(); try{closeAlertEditor(); closeHelp();}catch(err){} } });
+
+/* =========================================================
+   ۹٫۵) ویرایش و تمدید سررسید
+   ========================================================= */
+let editingId=null;
+function fmtWhen(r){ return jalFull(r.jy,r.jm,r.jd)+' — ساعت '+toFa(pad2(r.hh))+':'+toFa(pad2(r.mm)); }
+function startEdit(id){
+  const r=state.reminders.find(x=>x.id===id); if(!r) return;
+  editingId=id;
+  $('title').value=r.title||'';
+  $('note').value=r.note||'';
+  form.jy=r.jy; form.jm=r.jm; form.jd=r.jd; form.calYear=r.jy; form.calMonth=r.jm;
+  form.hh=r.hh; form.mm=r.mm;
+  $('hh').value=String(r.hh); $('mm').value=String(r.mm);
+  form.alerts=(r.alerts||[]).map(a=>({unit:a.unit,value:a.value}));
+  $('mailOn').checked=!!r.email;
+  renderCal(); renderPresets(); renderCustChips(); updateSelLine();
+  $('editName').textContent=r.title+(r.tag? ' ('+r.tag+')':'');
+  $('editHint').innerHTML='سررسید فعلی: <b>'+fmtWhen(r)+'</b>'+
+    ((r.history&&r.history.length)? ' — '+toFa(r.history.length)+' بار تمدید شده':'')+
+    '<br>تاریخ جدید را از تقویم انتخاب کنید (یا از «تمدید سریع») و «ذخیره تغییرات» را بزنید.';
+  $('editBanner').style.display='flex';
+  $('addBtn').textContent='💾 ذخیره تغییرات';
+  $('formTitle').innerHTML='✏️ ویرایش و تمدید سررسید <span class="mini">تغییر روی همان یادآور اعمال می‌شود</span>';
+  scrollToEl(document.querySelector('.grid'),'start');
+  try{ $('title').focus(); }catch(e){}
+}
+function cancelEdit(){
+  editingId=null;
+  $('editBanner').style.display='none';
+  $('addBtn').textContent='افزودن یادآور';
+  $('formTitle').innerHTML='➕ یادآور جدید <span class="mini">تاریخ شمسی، ساعت، و یادآوری‌های پیشاپیش</span>';
+  $('title').value=''; $('note').value=''; $('mailOn').checked=true;
+  form.jy=nj.jy; form.jm=nj.jm; form.jd=nj.jd; form.calYear=nj.jy; form.calMonth=nj.jm;
+  form.alerts=[{unit:'d',value:1},{unit:'h',value:3}];
+  renderCal(); renderPresets(); renderCustChips(); updateSelLine();
+}
+function addMonthsJ(jy,jm,jd,n){
+  let m=(jm-1)+n, y=jy+Math.floor(m/12);
+  m=((m%12)+12)%12+1;
+  return {jy:y, jm:m, jd:Math.min(jd, monthLen(y,m))};
+}
+function shiftFormDate(code){
+  let j;
+  if(code==='d10'){ j=d2j(j2d(form.jy,form.jm,form.jd)+10); }
+  else if(code==='m1') j=addMonthsJ(form.jy,form.jm,form.jd,1);
+  else if(code==='m2') j=addMonthsJ(form.jy,form.jm,form.jd,2);
+  else if(code==='m3') j=addMonthsJ(form.jy,form.jm,form.jd,3);
+  else if(code==='m6') j=addMonthsJ(form.jy,form.jm,form.jd,6);
+  else if(code==='y1') j=addMonthsJ(form.jy,form.jm,form.jd,12);
+  else return;
+  form.jy=j.jy; form.jm=j.jm; form.jd=j.jd; form.calYear=j.jy; form.calMonth=j.jm;
+  renderCal(); updateSelLine();
+  toast('تاریخ جدید', fmtWhen({jy:form.jy,jm:form.jm,jd:form.jd,hh:form.hh,mm:form.mm}));
+}
+$('editBanner').querySelectorAll('[data-shift]').forEach(b=>b.addEventListener('click',()=>shiftFormDate(b.dataset.shift)));
+$('cancelEdit').addEventListener('click',cancelEdit);
+
+/* ذخیره ویرایش/تمدید */
+function saveEdit(){
+  const r=state.reminders.find(x=>x.id===editingId);
+  if(!r){ cancelEdit(); return; }
+  const old={jy:r.jy,jm:r.jm,jd:r.jd,hh:r.hh,mm:r.mm};
+  const changed = old.jy!==form.jy || old.jm!==form.jm || old.jd!==form.jd || old.hh!==form.hh || old.mm!==form.mm;
+  r.title=$('title').value.trim() || r.title;
+  r.note=$('note').value.trim();
+  r.jy=form.jy; r.jm=form.jm; r.jd=form.jd; r.hh=form.hh; r.mm=form.mm;
+  r.alerts=form.alerts.slice();
+  r.email=$('mailOn').checked;
+  if(changed){
+    r.history=(r.history||[]).concat([{from:old, to:{jy:r.jy,jm:r.jm,jd:r.jd,hh:r.hh,mm:r.mm}, at:Date.now()}]);
+    r.done=false;                                     /* با سررسید جدید، دوباره فعال می‌شود */
+    Object.keys(state.fired).forEach(k=>{ if(k.startsWith(r.id+'#')) delete state.fired[k]; });
+  }
+  saveAll(); renderList(); tick();
+  const oldTxt=fmtWhen(old), newTxt=fmtWhen(r);
+  cancelEdit();
+  toast(changed? 'سررسید تمدید شد ✅':'تغییرات ذخیره شد ✅', changed? (oldTxt+'  ←  '+newTxt) : 'یادآور به‌روزرسانی شد.', 'ok');
+  logIt(changed? `تمدید «${r.title}»: ${oldTxt} ← ${newTxt}` : `ویرایش «${r.title}»`, 'ok');
+}
+
+/* =========================================================
+   ۱۰) افزودن / رویدادها
+   ========================================================= */
+$('addBtn').addEventListener('click',()=>{
+  const title=$('title').value.trim();
+  if(!title){ toast('عنوان خالی است','یک عنوان برای یادآور بنویسید.','err'); $('title').focus(); return; }
+  if(!form.alerts.length && !confirm('هیچ یادآوری پیشاپیشی انتخاب نشده؛ فقط در همان لحظه اعلان بیاید؟')) return;
+  const gsel=toG(form.jy,form.jm,form.jd);
+  const evTime=new Date(gsel.gy,gsel.gm-1,gsel.gd,form.hh,form.mm,0,0).getTime();
+  if(evTime<Date.now()-60000 && !confirm('زمان این رویداد در گذشته است؛ باز هم ذخیره شود؟')) return;
+  if(editingId){ saveEdit(); return; }
+  const r={
+    id:uid(), title, note:$('note').value.trim(),
+    jy:form.jy, jm:form.jm, jd:form.jd, hh:form.hh, mm:form.mm,
+    alerts:form.alerts.slice(), email:$('mailOn').checked, done:false, createdAt:Date.now()
+  };
+  state.reminders.push(r); saveAll();
+  $('title').value=''; $('note').value='';
+  renderList();
+  toast('یادآور اضافه شد ✅', jalFull(r.jy,r.jm,r.jd)+' — '+toFa(pad2(r.hh))+':'+toFa(pad2(r.mm)), 'ok');
+  tick();
+  /* یادآوری یک‌بارهٔ اجازهٔ اعلان */
+  try{
+    if('Notification' in window && Notification.permission==='default' && !bridgeOk && !sessionStorage.getItem('yd_perm_nudge')){
+      sessionStorage.setItem('yd_perm_nudge','1');
+      setTimeout(()=>toast('اجازهٔ اعلان داده نشده','روی چیپ «🔔 اعلان سیستم» بالای صفحه بزنید و Allow بدهید. تا آن موقع بنر قرمز + صدا + چشمک عنوان کار می‌کند.','err'), 1200);
+    }
+  }catch(e){}
+});
+$('prevM').addEventListener('click',()=>{ form.calMonth--; if(form.calMonth<1){form.calMonth=12; form.calYear--;} renderCal(); });
+$('nextM').addEventListener('click',()=>{ form.calMonth++; if(form.calMonth>12){form.calMonth=1; form.calYear++;} renderCal(); });
+$('setToday').addEventListener('click',()=>{ form.jy=nj.jy; form.jm=nj.jm; form.jd=nj.jd; form.calYear=nj.jy; form.calMonth=nj.jm; renderCal(); updateSelLine(); });
+$('setTomorrow').addEventListener('click',()=>{
+  const d=new Date(now.getFullYear(),now.getMonth(),now.getDate()+1);
+  const j=toJ(d.getFullYear(),d.getMonth()+1,d.getDate());
+  form.jy=j.jy; form.jm=j.jm; form.jd=j.jd; form.calYear=j.jy; form.calMonth=j.jm;
+  renderCal(); updateSelLine();
+});
+$('setNow').addEventListener('click',()=>{
+  const d=new Date(); form.hh=d.getHours(); form.mm=d.getMinutes();
+  $('hh').value=form.hh; $('mm').value=form.mm;
+  form.jy=nj.jy; form.jm=nj.jm; form.jd=nj.jd; form.calYear=nj.jy; form.calMonth=nj.jm;
+  renderCal(); updateSelLine();
+});
+$('hh').addEventListener('change',()=>{ form.hh=+$('hh').value; updateSelLine(); });
+$('mm').addEventListener('change',()=>{ form.mm=+$('mm').value; updateSelLine(); });
+$('addCust').addEventListener('click',()=>{
+  const v=Math.max(1,Math.min(999,+$('custVal').value||1));
+  const u=$('custUnit').value;
+  if(form.alerts.some(a=>a.unit===u&&a.value===v)){ toast('تکراری است','این یادآور قبلاً اضافه شده.','err'); return; }
+  form.alerts.push({unit:u,value:v});
+  form.alerts.sort((a,b)=>minutesOf(b)-minutesOf(a));
+  renderPresets(); renderCustChips(); updateSelLine();
+});
+
+/* =========================================================
+   ۱۱) تنظیمات ایمیل
+   ========================================================= */
+(function initSettings(){
+  const s=state.settings;
+  $('toEmail').value=s.toEmail||''; $('publicKey').value=s.publicKey||'';
+  $('serviceId').value=s.serviceId||''; $('templateId').value=s.templateId||'';
+  $('soundChip').textContent = s.sound? '🔔 صدا: روشن':'🔕 صدا: خاموش';
+  if($('cloudUrl')) $('cloudUrl').value=s.cloudUrl||'';
+})();
+$('saveMail').addEventListener('click',()=>{
+  state.settings.toEmail=$('toEmail').value.trim();
+  state.settings.publicKey=$('publicKey').value.trim();
+  state.settings.serviceId=$('serviceId').value.trim();
+  state.settings.templateId=$('templateId').value.trim();
+  saveAll(); refreshEmailChip();
+  toast(mailReady()?'تنظیمات ایمیل ذخیره شد ✅':'ذخیره شد','اگر همه فیلدها پر باشد، ایمیل‌ها ارسال می‌شوند.', mailReady()?'ok':'');
+  logIt(mailReady()? 'تنظیمات ایمیل کامل شد':'تنظیمات ایمیل ذخیره شد (ناقص)', mailReady()?'ok':'');
+});
+$('testMail').addEventListener('click',async()=>{
+  $('saveMail').click();
+  if(!mailReady()){ toast('فیلدها ناقص‌اند','چهار فیلد ایمیل را پر کنید.','err'); return; }
+  const ok=await sendEmail(
+    {title:'تست یادآور شمسی', note:'این یک ایمیل آزمایشی است.', jy:form.jy, jm:form.jm, jd:form.jd, hh:form.hh, mm:form.mm},
+    {unit:'m',value:0}, 0
+  );
+  toast(ok?'ایمیل آزمایشی ارسال شد ✅':'ارسال ناموفق', ok?'صندوق ورودی را ببینید.':'جزئیات در بخش گزارش‌ها.', ok?'ok':'err');
+});
+
+/* =========================================================
+   ۱۲) خروجی .ics
+   ========================================================= */
+const pad=n=>String(n).padStart(2,'0');
+const icsDate=ts=>{ const d=new Date(ts); return d.getUTCFullYear()+pad(d.getUTCMonth()+1)+pad(d.getUTCDate())+'T'+pad(d.getUTCHours())+pad(d.getUTCMinutes())+'00Z'; };
+function triggerDur(a){
+  const m=minutesOf(a);
+  if(m % 1440 === 0) return `-P${m/1440}D`;
+  if(m % 60 === 0) return `-PT${m/60}H`;
+  return `-PT${m}M`;
+}
+function buildICS(list){
+  const L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Yadavar Shamsi//FA//EN','CALSCALE:GREGORIAN','METHOD:PUBLISH','X-WR-CALNAME:یادآور شمسی'];
+  list.forEach(r=>{
+    const ts=tsOf(r);
+    L.push('BEGIN:VEVENT');
+    L.push('UID:'+r.id+'@yadavar');
+    L.push('DTSTAMP:'+icsDate(Date.now()));
+    L.push('DTSTART:'+icsDate(ts));
+    L.push('DTEND:'+icsDate(ts+15*60000));
+    L.push('SUMMARY:'+r.title.replace(/\n/g,' '));
+    L.push('DESCRIPTION:'+(jalFull(r.jy,r.jm,r.jd)+' ساعت '+pad(r.hh)+':'+pad(r.mm)+(r.note? '\\n'+r.note.replace(/\n/g,'\\n'):'')).replace(/\n/g,'\\n'));
+    if(mailReady()) L.push('ORGANIZER;CN=یادآور شمسی:mailto:'+state.settings.toEmail);
+    (r.alerts||[]).length ? (r.alerts||[]).forEach(a=>{
+      L.push('BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:'+r.title,'TRIGGER:'+triggerDur(a),'END:VALARM');
+      if(r.email && state.settings.toEmail) L.push('BEGIN:VALARM','ACTION:EMAIL','SUMMARY:یادآور: '+r.title,
+        'DESCRIPTION:'+r.title,'ATTENDEE:mailto:'+state.settings.toEmail,'TRIGGER:'+triggerDur(a),'END:VALARM');
+    }) : L.push('BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:'+r.title,'TRIGGER:PT0M','END:VALARM');
+    L.push('END:VEVENT');
+  });
+  L.push('END:VCALENDAR');
+  return L.join('\r\n');
+}
+function download(name, text, mime){
+  try{
+    const blob=new Blob([text],{type:(mime||'text/plain')+';charset=utf-8'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a'); a.href=url; a.download=name;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),5000);
+    return true;
+  }catch(e){ return false; }
+}
+$('icsBtn').addEventListener('click',()=>{
+  const list=state.reminders.filter(r=>!r.done);
+  if(!list.length){ toast('چیزی برای خروجی نیست','اول یک یادآور بسازید.','err'); return; }
+  const ics=buildICS(list);
+  if(download('yadavar.ics', ics, 'text/calendar')) { logIt('فایل ics ساخته شد ('+list.length+' رویداد)','ok'); toast('فایل .ics آماده شد','در Google Calendar → Settings → Import وارد کنید.','ok'); }
+  else showModal('محتوای فایل .ics','این محیط اجازه دانلود نمی‌دهد؛ متن را کپی و با پسوند ‎.ics ذخیره کنید.', ics, 'yadavar.ics');
+});
+
+/* =========================================================
+   ۱۳) خروجی Apps Script (اجرای ابری — وقتی PC خاموش است)
+   ========================================================= */
+function buildGAS(){
+  const recs=state.reminders.filter(r=>!r.done).map(r=>({
+    id:r.id,
+    title:r.title,
+    note:r.note||'',
+    when:new Date(tsOf(r)).toISOString(),
+    whenFa:jalFull(r.jy,r.jm,r.jd)+' ساعت '+pad2(r.hh)+':'+pad2(r.mm),
+    alerts:(r.alerts||[]).map(a=>({label:alertLabel(a), minutes:minutesOf(a)}))
+  }));
+  const email=state.settings.toEmail||'you@gmail.com';
+  const data=JSON.stringify(recs,null,2);
+  return `/**
+ * یادآور شمسی — اسکریپت ابری گوگل (نسخهٔ زنده)
+ * ساخت خودکار: ${new Date().toISOString()}
+ *
+ * ★ این نسخه «زنده» است: اگر آدرس Web App را در برنامه وارد کنید،
+ *   هر تغییری در برنامه (افزودن/تمدید/حذف) خودکار به همین اسکریپت می‌رسد
+ *   و دیگر لازم نیست هیچ‌چیز را دستی آپدیت کنید.
+ *
+ * روش استفاده:
+ *  ۱) https://script.google.com  →  New project  →  کل این متن را جای‌گذاری کنید.
+ *  ۲) تابع setup را یک‌بار اجرا کنید (Run) و دسترسی‌ها را تأیید کنید.
+ *  ۳) Deploy  →  New deployment  →  نوع: Web app
+ *        Execute as: Me      |      Who has access: Anyone
+ *     سپس URL تمام‌شده با /exec را کپی کنید.
+ *  ۴) در برنامه، بخش «همگام‌سازی خودکار ابری» همان URL را بچسبانید → ذخیره.
+ *     از آن به بعد همه‌چیز خودکار است.
+ */
+
+var CONFIG = {
+  email: '${email}',
+  subjectPrefix: '⏰ یادآور: ',
+  lookbackMinutes: 59
+};
+
+/* دادهٔ اولیه (اگر هنوز از برنامه چیزی ارسال نشده باشد) */
+var REMINDERS = ${data};
+
+function setup() {
+  ScriptApp.getProjectTriggers().forEach(function (t) { ScriptApp.deleteTrigger(t); });
+  ScriptApp.newTrigger('checkReminders').timeBased().everyMinutes(1).create();
+  Logger.log('trigger created');
+}
+
+function getLive_() {
+  try {
+    var s = PropertiesService.getScriptProperties().getProperty('LIVE_DATA');
+    return s ? JSON.parse(s) : null;
+  } catch (e) { return null; }
+}
+
+/* دریافت دادهٔ زنده از برنامهٔ شما */
+function doPost(e) {
+  try {
+    var body = (e && e.postData && e.postData.contents) ? e.postData.contents : '{}';
+    var d = JSON.parse(body);
+    if (d && d.reminders) {
+      PropertiesService.getScriptProperties().setProperty('LIVE_DATA', JSON.stringify({
+        updatedAt: d.updatedAt || Date.now(),
+        reminders: d.reminders
+      }));
+      return ContentService.createTextOutput(JSON.stringify({ ok: true, count: d.reminders.length }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+  } catch (err) { }
+  return ContentService.createTextOutput(JSON.stringify({ ok: false }))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function doGet() {
+  return ContentService.createTextOutput(JSON.stringify(getLive_() || { ok: true, live: false }))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function testEmail() {
+  MailApp.sendEmail({
+    to: CONFIG.email,
+    subject: CONFIG.subjectPrefix + 'تست',
+    htmlBody: '<div dir="rtl" style="font-family:Tahoma">این یک ایمیل آزمایشی از اسکریپت ابری یادآور شمسی است.</div>'
+  });
+  Logger.log('test sent');
+}
+
+function checkReminders() {
+  var live = getLive_();
+  var list = (live && live.reminders && live.reminders.length) ? live.reminders : REMINDERS;
+  var now = Date.now();
+  var props = PropertiesService.getScriptProperties();
+
+  list.forEach(function (r) {
+    var base = new Date(r.when).getTime();
+    if (isNaN(base)) return;
+    (r.alerts || []).forEach(function (a, i) {
+      /* کلید یکتا بر اساس زمان رویداد → بعد از تمدید، یادآوری جدید دوباره ارسال می‌شود */
+      var key = 'sent_' + r.id + '_' + i + '_' + Math.floor(base / 60000);
+      var at = base - a.minutes * 60000;
+      if (now >= at && now - at <= CONFIG.lookbackMinutes * 60000 && !props.getProperty(key)) {
+        MailApp.sendEmail({
+          to: CONFIG.email,
+          subject: CONFIG.subjectPrefix + r.title + ' — ' + a.label,
+          htmlBody:
+            '<div dir="rtl" style="font-family:Tahoma,Arial;font-size:15px;line-height:1.9">' +
+              '<h2 style="margin:0 0 8px">⏰ ' + r.title + '</h2>' +
+              '<p style="margin:0 0 6px"><b>یادآوری:</b> ' + a.label + '</p>' +
+              '<p style="margin:0 0 6px"><b>زمان رویداد:</b> ' + r.whenFa + '</p>' +
+              (r.note ? '<p style="margin:10px 0 0;padding:10px;background:#f4f6fb;border-radius:8px">' + r.note + '</p>' : '') +
+              '<hr style="border:none;border-top:1px solid #e5e9f2;margin:14px 0">' +
+              '<p style="color:#7a869a;font-size:12px;margin:0">ارسال‌شده توسط اسکریپت ابری یادآور شمسی</p>' +
+            '</div>'
+        });
+        props.setProperty(key, new Date().toISOString());
+        Logger.log('sent ' + key);
+      }
+    });
+  });
+}
+`;
+}
+
+$('gasBtn').addEventListener('click',()=>{
+  const list=state.reminders.filter(r=>!r.done);
+  if(!list.length){ toast('چیزی برای انتقال نیست','اول یادآور بسازید.','err'); return; }
+  showModal('اسکریپت ابری گوگل (Code.gs)',
+    'این کد را در script.google.com جای‌گذاری کنید و یک‌بار setup را اجرا کنید. بعد از آن، ایمیل‌ها از سرور گوگل می‌آیند — سیستم شما می‌تواند خاموش باشد.',
+    buildGAS(), 'Code.gs');
+});
+
+/* مودال */
+let modalFileName='file.txt';
+function showModal(title, sub, text, fileName){
+  $('modalTitle').textContent=title; $('modalSub').textContent=sub;
+  $('modalText').value=text; modalFileName=fileName||'file.txt';
+  $('modal').classList.add('show');
+}
+$('modalClose').addEventListener('click',()=>$('modal').classList.remove('show'));
+$('modal').addEventListener('click',e=>{ if(e.target.id==='modal') $('modal').classList.remove('show'); });
+$('modalCopy').addEventListener('click',async()=>{
+  const tx=$('modalText');
+  try{ await navigator.clipboard.writeText(tx.value); toast('کپی شد ✅','حالا در گوگل جای‌گذاری کنید.','ok'); }
+  catch(e){ tx.select(); document.execCommand&&document.execCommand('copy'); toast('انتخاب شد','با Ctrl+C کپی کنید.'); }
+});
+$('modalDl').addEventListener('click',()=>{
+  if(!download(modalFileName,$('modalText').value)) toast('دانلود ناممکن','متن را کپی کنید.','err');
+});
+
+/* پشتیبان‌گیری */
+$('exportJson').addEventListener('click',()=>{
+  const data=JSON.stringify({reminders:state.reminders, settings:state.settings, version:1}, null, 2);
+  if(!download('yadavar-backup.json', data, 'application/json')) showModal('پشتیبان','متن را کپی و در فایلی با پسوند .json ذخیره کنید.', data, 'yadavar-backup.json');
+  else toast('پشتیبان ذخیره شد ✅','همه یادآورها و تنظیمات.', 'ok');
+});
+$('importJson').addEventListener('click',()=>$('jsonInput').click());
+$('jsonInput').addEventListener('change',e=>{
+  const f=e.target.files && e.target.files[0]; if(!f) return;
+  const rd=new FileReader();
+  rd.onload=()=>{
+    try{
+      const txt=String(rd.result);
+      let o;
+      if(/<script id="ydData"/.test(txt)){
+        const m=/<script id="ydData"[^>]*>([\s\S]*?)<\/script>/.exec(txt);
+        o=JSON.parse(m[1]);
+      } else { o=JSON.parse(txt); }
+      if(!o || !Array.isArray(o.reminders)) throw new Error('ساختار نامعتبر');
+      if(state.reminders.length && !confirm(`در فایل فعلی ${toFa(state.reminders.length)} یادآور هست.\n\n«تأیید» = داده‌های فایل انتخاب‌شده جایگزین شود\n«لغو» = فقط موارد جدید به لیست اضافه شود`)){
+        const have=new Set(state.reminders.map(r=>r.title+'|'+r.jy+r.jm+r.jd+r.hh+r.mm));
+        const add=(o.reminders||[]).filter(r=>!have.has(r.title+'|'+r.jy+r.jm+r.jd+r.hh+r.mm));
+        state.reminders=state.reminders.concat(add.map(r=>Object.assign({},r,{id:uid()})));
+      } else {
+        state.reminders=o.reminders.map(r=>Object.assign({},r,{id:r.id||uid()}));
+      }
+      if(o.settings) state.settings=Object.assign(state.settings,o.settings);
+      if(o.fired) state.fired=Object.assign(state.fired||{},o.fired);
+      saveAll(); renderList(); refreshEmailChip(); updateSaveChip();
+      if($('cloudUrl')) $('cloudUrl').value=state.settings.cloudUrl||'';
+      toast('بازگردانی شد ✅', toFa(state.reminders.length)+' یادآور در لیست است.','ok');
+      logIt('بازگردانی از فایل: '+toFa(state.reminders.length)+' یادآور','ok');
+    }catch(err){ toast('فایل نامعتبر', err.message||'JSON معتبر نیست.','err'); }
+    e.target.value='';
+  };
+  rd.readAsText(f);
+});
+
+/* =========================================================
+   ۱۳٫۴) ورود گروهی از اکسل (چک / ضمانت‌نامه / هر لیست)
+   ========================================================= */
+const imp={ raw:[], headers:[], data:[], hasHeader:true, map:{}, preview:[], alerts:[{unit:'d',value:1},{unit:'h',value:3}] };
+const persianToEn=s=>String(s==null?'':s)
+  .replace(/[۰-۹]/g,c=>String(c.charCodeAt(0)-0x06F0))
+  .replace(/[٠-٩]/g,c=>String(c.charCodeAt(0)-0x0660))
+  .replace(/ي/g,'ی').replace(/ك/g,'ک');
+
+function parseDelimited(text){
+  const t=String(text).replace(/^\uFEFF/,'').replace(/\r\n?/g,'\n');
+  const firstLine=t.split('\n')[0]||'';
+  const tabs=(firstLine.match(/\t/g)||[]).length, commas=(firstLine.match(/,/g)||[]).length, semis=(firstLine.match(/;/g)||[]).length;
+  const delim = tabs>=commas && tabs>=semis && tabs>0 ? '\t' : (semis>commas? ';' : ',');
+  const rows=[]; let row=[], cur='', inQ=false;
+  for(let i=0;i<t.length;i++){
+    const c=t[i];
+    if(inQ){
+      if(c==='"'){ if(t[i+1]==='"'){ cur+='"'; i++; } else inQ=false; }
+      else cur+=c;
+    } else if(c==='"') inQ=true;
+    else if(c===delim){ row.push(cur); cur=''; }
+    else if(c==='\n'){ row.push(cur); rows.push(row); row=[]; cur=''; }
+    else cur+=c;
+  }
+  row.push(cur); rows.push(row);
+  return rows.filter(r=>r.some(x=>String(x).trim()!==''));
+}
+
+/* --- خواندن xlsx بدون هیچ کتابخانه‌ای (zip + DecompressionStream) --- */
+async function inflateBytes(u8, method){
+  if(method===0) return u8;
+  if(typeof DecompressionStream==='undefined') throw new Error('این مرورگر xlsx را نمی‌تواند بخواند؛ لطفاً فایل را CSV ذخیره کنید یا ستون‌ها را کپی/پیست کنید.');
+  const ds=new DecompressionStream('deflate-raw');
+  const pump=(async()=>{
+    const wt=ds.writable.getWriter();
+    try{ await wt.write(u8); } finally { await wt.close(); }
+  })().catch(()=>{});
+  const reader=ds.readable.getReader();
+  const chunks=[]; let total=0;
+  for(;;){
+    const r=await reader.read();
+    if(r.done) break;
+    chunks.push(r.value); total+=r.value.length;
+  }
+  await pump;
+  const out=new Uint8Array(total); let off=0;
+  for(const c of chunks){ out.set(c,off); off+=c.length; }
+  return out;
+}
+async function unzip(buffer){
+  const u8=new Uint8Array(buffer), dv=new DataView(buffer);
+  let eocd=-1;
+  for(let i=u8.length-22;i>=Math.max(0,u8.length-66000);i--){ if(dv.getUint32(i,true)===0x06054b50){ eocd=i; break; } }
+  if(eocd<0) throw new Error('فایل xlsx سالم نیست (zip پیدا نشد).');
+  const count=dv.getUint16(eocd+10,true); let p=dv.getUint32(eocd+16,true);
+  const files={};
+  for(let i=0;i<count;i++){
+    if(p+46>u8.length || dv.getUint32(p,true)!==0x02014b50) break;
+    const method=dv.getUint16(p+10,true);
+    const csize=dv.getUint32(p+20,true);
+    const nameLen=dv.getUint16(p+28,true), extraLen=dv.getUint16(p+30,true), commentLen=dv.getUint16(p+32,true);
+    const lho=dv.getUint32(p+42,true);
+    const name=new TextDecoder().decode(u8.subarray(p+46,p+46+nameLen));
+    if(lho+30<=u8.length){
+      const lnameLen=dv.getUint16(lho+26,true), lextraLen=dv.getUint16(lho+28,true);
+      const start=lho+30+lnameLen+lextraLen;
+      files[name]={method, data:u8.subarray(start, start+csize)};
+    }
+    p+=46+nameLen+extraLen+commentLen;
+  }
+  return files;
+}
+const colIndex=ref=>{ const m=/^([A-Z]+)/.exec(ref||''); if(!m) return 0; let n=0; for(const ch of m[1]) n=n*26+(ch.charCodeAt(0)-64); return n-1; };
+async function readXlsx(file){
+  const files=await unzip(await file.arrayBuffer());
+  const dec=new TextDecoder('utf-8');
+  let shared=[];
+  if(files['xl/sharedStrings.xml']){
+    const xml=dec.decode(await inflateBytes(files['xl/sharedStrings.xml'].data, files['xl/sharedStrings.xml'].method));
+    const doc=new DOMParser().parseFromString(xml,'application/xml');
+    shared=[...doc.getElementsByTagName('si')].map(si=>[...si.getElementsByTagName('t')].map(t=>t.textContent).join(''));
+  }
+  const sheetName=Object.keys(files).filter(n=>/^xl\/worksheets\/sheet\d+\.xml$/.test(n)).sort()[0];
+  if(!sheetName) throw new Error('برگه‌ای در فایل پیدا نشد.');
+  const xml=dec.decode(await inflateBytes(files[sheetName].data, files[sheetName].method));
+  const doc=new DOMParser().parseFromString(xml,'application/xml');
+  const rows=[];
+  [...doc.getElementsByTagName('row')].forEach(r=>{
+    const cells=[];
+    [...r.getElementsByTagName('c')].forEach(c=>{
+      const idx=colIndex(c.getAttribute('r'));
+      const t=c.getAttribute('t');
+      let v='';
+      if(t==='s'){ const vv=c.getElementsByTagName('v')[0]; v=shared[+(vv?vv.textContent:0)]||''; }
+      else if(t==='inlineStr'){ v=[...c.getElementsByTagName('t')].map(x=>x.textContent).join(''); }
+      else {
+        const vv=c.getElementsByTagName('v')[0];
+        v= vv? vv.textContent : '';
+        if((t===null||t==='n') && v!=='' && !isNaN(Number(v))) v=Number(v);
+      }
+      cells[idx]=v;
+    });
+    const arr=[]; for(let i=0;i<cells.length;i++) arr.push(cells[i]==null? '':cells[i]);
+    rows.push(arr);
+  });
+  return rows.filter(r=>r.some(x=>String(x).trim()!==''));
+}
+
+/* --- تشخیص و تبدیل تاریخ --- */
+function isDateLike(v){
+  const s=persianToEn(v).trim();
+  if(typeof v==='number' && v>20000 && v<80000) return true;
+  return /^\d{2,4}[\/\-.]\d{1,2}[\/\-.]\d{1,2}/.test(s);
+}
+function isTimeLike(v){ return /^\s*\d{1,2}:\d{2}/.test(persianToEn(v)); }
+function excelSerialToDate(n){
+  const whole=Math.floor(n);
+  const ms=Math.round((whole-25569)*86400000);
+  const frac=n-whole;
+  const mins=Math.round(frac*1440);
+  const d=new Date(ms);
+  return { gy:d.getUTCFullYear(), gm:d.getUTCMonth()+1, gd:d.getUTCDate(), hh:Math.floor(mins/60)%24, mm:mins%60, hasTime: frac>0.0005 };
+}
+function parseTimeCell(v){
+  const s=persianToEn(v);
+  const m=/(\d{1,2}):(\d{2})(?::\d{2})?/.exec(s);
+  if(!m) return null;
+  const hh=+m[1], mm=+m[2];
+  if(hh>23||mm>59) return null;
+  return {hh,mm};
+}
+function parseDateCell(v){
+  if(v==null || v==='') return null;
+  if(typeof v==='number'){
+    if(v>20000 && v<80000){ const g=excelSerialToDate(v); const j=toJ(g.gy,g.gm,g.gd);
+      return {jy:j.jy, jm:j.jm, jd:j.jd, hh: g.hasTime? g.hh:null, mm: g.hasTime? g.mm:null, greg:true}; }
+    return null;
+  }
+  let s=persianToEn(v).trim();
+  if(/^\d{5}(\.\d+)?$/.test(s)){
+    const n=Number(s);
+    if(n>20000 && n<80000){ const g=excelSerialToDate(n); const j=toJ(g.gy,g.gm,g.gd);
+      return {jy:j.jy, jm:j.jm, jd:j.jd, hh: g.hasTime? g.hh:null, mm: g.hasTime? g.mm:null, greg:true}; }
+  }
+  const m=/^(\d{2,4})\s*[\/\-.]\s*(\d{1,2})\s*[\/\-.]\s*(\d{1,2})(?:[^\d]{0,8}(\d{1,2}):(\d{2}))?/.exec(s);
+  if(!m) return null;
+  let y=+m[1], mo=+m[2], d=+m[3];
+  if(y<100) y+=1400;
+  let hh = m[4]!=null? +m[4] : null, mm = m[5]!=null? +m[5] : null;
+  if(y>=1600 && y<=2300){
+    const j=toJ(y,mo,d);
+    if(!j || j.jm<1) return null;
+    return {jy:j.jy, jm:j.jm, jd:j.jd, hh, mm, greg:true};
+  }
+  if(y<1200 || y>1600) return null;
+  if(mo<1||mo>12) return null;
+  if(d<1||d>monthLen(y,mo)) return null;
+  return {jy:y, jm:mo, jd:d, hh, mm, greg:false};
+}
+
+/* --- بارگذاری و تطبیق ستون‌ها --- */
+function loadRows(rows, sourceName){
+  if(!rows || !rows.length){ $('importStatus').textContent='هیچ داده‌ای پیدا نشد.'; return; }
+  imp.raw=rows;
+  const first=(rows[0]||[]).map(c=>String(c).trim());
+  const kw=/تاریخ|عنوان|شرح|بابت|موضوع|شماره|مبلغ|ساعت|دسته|نوع|بانک|توضیح|چک|ضمانت|date|amount|title|time/i;
+  const headerish = first.some(c=>kw.test(c)) || (!first.some(isDateLike) && rows.length>1 && (rows[1]||[]).some(isDateLike));
+  imp.hasHeader=headerish;
+  $('hasHeader').checked=headerish;
+  applyTable();
+  $('importStatus').textContent=`${toFa(rows.length)} ردیف خوانده شد (${sourceName}).`;
+  $('mapBox').style.display='block';
+  $('previewBox').style.display='block';
+  scrollToEl($('mapBox'),'start');
+}
+function applyTable(){
+  const rows=imp.raw;
+  const width=rows.reduce((m,r)=>Math.max(m,r.length),0);
+  const mkHdr=i=>`ستون ${i+1}`;
+  imp.headers = imp.hasHeader
+    ? Array.from({length:width},(_,i)=> String((rows[0]||[])[i]||'').trim() || mkHdr(i))
+    : Array.from({length:width},(_,i)=> mkHdr(i));
+  imp.data = imp.hasHeader? rows.slice(1) : rows;
+  autoMap(width);
+  renderMapping();
+  buildPreview();
+}
+function colRatio(i, test){
+  const rows=imp.data.slice(0,60).filter(r=>String(r[i]==null?'':r[i]).trim()!=='');
+  if(!rows.length) return 0;
+  return rows.filter(r=>test(r[i])).length/rows.length;
+}
+function autoMap(width){
+  const used=new Set();
+  const pick=(valTest)=>{
+    let best=-1, bestScore=0;
+    for(let i=0;i<width;i++){
+      if(used.has(i)) continue;
+      const sc=colRatio(i,valTest);
+      if(sc>bestScore){ bestScore=sc; best=i; }
+    }
+    if(best>=0 && bestScore>=0.5){ used.add(best); return String(best); }
+    return '';
+  };
+  const hIdx=re=>{ for(let i=0;i<imp.headers.length;i++) if(re.test(imp.headers[i])) return i; return -1; };
+  const prefer=(re, fallback)=>{
+    const i=hIdx(re);
+    if(i>=0 && !used.has(i)){ used.add(i); return String(i); }
+    return fallback();
+  };
+  imp.map={};
+  imp.map.date = prefer(/تاریخ|date|سررسید|مهلت/i, ()=>pick(v=>isDateLike(v)?1:0));
+  imp.map.time = prefer(/ساعت|زمان|time/i, ()=>pick(v=>isTimeLike(v)?1:0));
+  imp.map.number = prefer(/شماره|سریال|کد|شمارچ/i, ()=>'');
+  imp.map.amount = prefer(/مبلغ|مقدار|ریال|تومان|amount|value/i, ()=>pick(v=>/^[\d,.\s]+$/.test(persianToEn(v)) && persianToEn(v).replace(/\D/g,'').length>=4 ? 1:0));
+  imp.map.tag = prefer(/نوع|دسته|گروه|بانک|type|category/i, ()=>'');
+  imp.map.note = prefer(/توضیح|یادداشت|پیوست|note|desc/i, ()=>'');
+  imp.map.title = prefer(/عنوان|شرح|بابت|موضوع|نام|title|subject/i, ()=>{
+    let best=-1, bestLen=-1;
+    for(let i=0;i<width;i++){
+      if(used.has(i)) continue;
+      const avg=imp.data.slice(0,40).reduce((s,r)=>s+String(r[i]==null?'':r[i]).length,0)/Math.max(1,Math.min(40,imp.data.length));
+      if(avg>bestLen){ bestLen=avg; best=i; }
+    }
+    if(best>=0){ used.add(best); return String(best); }
+    return '';
+  });
+}
+const MAP_FIELDS=[
+  ['title','عنوان / شرح'],['date','تاریخ (الزامی)'],['time','ساعت'],
+  ['number','شماره چک/سند'],['amount','مبلغ'],['tag','دسته (چک، ضمانت…)'],['note','توضیحات']
+];
+function renderMapping(){
+  $('mapGrid').innerHTML=MAP_FIELDS.map(([k,label])=>{
+    const opts=['<option value="">— ندارد —</option>'].concat(
+      imp.headers.map((h,i)=>`<option value="${i}" ${String(imp.map[k])===String(i)?'selected':''}>${esc(h)}</option>`)
+    ).join('');
+    return `<div><label>${label}</label><select data-map="${k}">${opts}</select></div>`;
+  }).join('');
+  $('mapGrid').querySelectorAll('select[data-map]').forEach(s=>{
+    s.addEventListener('change',()=>{ imp.map[s.dataset.map]=s.value; buildPreview(); });
+  });
+  $('hasHeader').onchange=()=>{ imp.hasHeader=$('hasHeader').checked; applyTable(); };
+}
+function fmtAmount(v){
+  const s=persianToEn(v).trim();
+  if(!s) return '';
+  const digits=s.replace(/[^\d]/g,'');
+  if(!digits) return s;
+  const hasUnit=/ریال|تومان|toman|rial/i.exec(s);
+  const n=Number(digits);
+  const out=isNaN(n)? s : n.toLocaleString('en-US');
+  return hasUnit? out+' '+(/تومان|toman/i.test(s)?'تومان':'ریال') : out;
+}
+function getCell(row,k){
+  const i=imp.map[k];
+  if(i===''||i==null) return '';
+  return row[+i]==null? '':row[+i];
+}
+function buildPreview(){
+  const defaultHh=+($('impHh').value||9), defaultMm=+($('impMm').value||0);
+  const seen=new Set();
+  imp.preview=imp.data.map((row,idx)=>{
+    const d=parseDateCell(getCell(row,'date'));
+    if(!d) return {ok:false, idx, err:'تاریخ نامعتبر' , title:String(getCell(row,'title')||''), tag:String(getCell(row,'tag')||'')};
+    let hh=defaultHh, mm=defaultMm;
+    const t=parseTimeCell(getCell(row,'time'));
+    if(t){ hh=t.hh; mm=t.mm; }
+    else if(d.hh!=null){ hh=d.hh; mm=(d.mm||0); }
+    let title=String(getCell(row,'title')||'').trim();
+    const num=String(getCell(row,'number')||'').trim();
+    const tag=String(getCell(row,'tag')||'').trim();
+    if(num) title = title? `${title} — ${num}` : `${tag||'یادآور'} ${num}`;
+    if(!title) title = (tag||'یادآور')+' '+jalStr(d.jy,d.jm,d.jd);
+    const amount=fmtAmount(getCell(row,'amount'));
+    const note=String(getCell(row,'note')||'').trim();
+    const key=`${title}|${d.jy}-${d.jm}-${d.jd}|${hh}:${mm}`;
+    const dupInFile=seen.has(key); if(!dupInFile) seen.add(key);
+    const dupExisting=state.reminders.some(r=>r.title===title && r.jy===d.jy && r.jm===d.jm && r.jd===d.jd && r.hh===hh && r.mm===mm);
+    const err = dupInFile? 'تکراری در فایل' : (dupExisting? 'از قبل در لیست هست' : '');
+    return {ok:!(dupInFile||dupExisting), dup:dupInFile||dupExisting, idx, err, title, tag, amount, note, jy:d.jy, jm:d.jm, jd:d.jd, hh, mm};
+  });
+  renderPreview();
+}
+function renderPreview(){
+  const okN=imp.preview.filter(p=>p.ok).length, badN=imp.preview.length-okN;
+  $('previewStats').innerHTML=`<b>${toFa(imp.preview.length)}</b> ردیف — <span style="color:#8ef0b4">${toFa(okN)} آماده افزودن</span>`+
+    (badN? ` — <span style="color:#ffb3c0">${toFa(badN)} ردیف مشکل‌دار (رد می‌شود)</span>`:'');
+  const head=`<thead><tr><th>#</th><th>عنوان</th><th>تاریخ شمسی</th><th>ساعت</th><th>مبلغ</th><th>دسته</th><th>وضعیت</th></tr></thead>`;
+  const body=imp.preview.slice(0,300).map((p,i)=>`<tr class="${p.ok?'':'bad'}">
+      <td>${toFa(i+1)}</td>
+      <td>${esc(p.title||'—')}</td>
+      <td>${p.err==='تاریخ نامعتبر'? '—' : jalFull(p.jy,p.jm,p.jd)}</td>
+      <td>${p.err==='تاریخ نامعتبر'? '—' : toFa(pad2(p.hh))+':'+toFa(pad2(p.mm))}</td>
+      <td>${esc(p.amount||'')}</td>
+      <td>${p.tag? `<span class="tag-pill">${esc(p.tag)}</span>`:''}</td>
+      <td>${p.ok? '✅' : '⚠️ '+esc(p.err)}</td>
+    </tr>`).join('');
+  $('previewTable').innerHTML=head+'<tbody>'+body+'</tbody>';
+  $('doImport').textContent=`افزودن ${toFa(okN)} یادآور به لیست`;
+  $('doImport').disabled = okN===0;
+}
+function doImport(){
+  const ready=imp.preview.filter(p=>p.ok);
+  if(!ready.length){ toast('چیزی برای افزودن نیست','همه ردیف‌ها مشکل دارند.','err'); return; }
+  const mailOn=$('impMail').checked;
+  if(!imp.alerts.length && !confirm('هیچ «یادآوری پیشاپیش» انتخاب نشده است.\n\nدر این حالت اعلان/ایمیل فقط سرِ همان ساعت سررسید می‌آید (بدون یادآوری زودتر).\n\nادامه می‌دهید؟')) return;
+  ready.forEach(p=>{
+    state.reminders.push({
+      id:uid(), title:p.title, note:p.note||'', tag:p.tag||'', amount:p.amount||'',
+      jy:p.jy, jm:p.jm, jd:p.jd, hh:p.hh, mm:p.mm,
+      alerts:imp.alerts.slice(), email:mailOn, done:false, createdAt:Date.now(), imported:true
+    });
+  });
+  saveAll(); renderList();
+  logIt(`${toFa(ready.length)} یادآور از اکسل اضافه شد`,'ok');
+  toast(`${toFa(ready.length)} یادآور اضافه شد ✅`,'از بخش «یادآورها» ببینید.','ok');
+  clearImport();
+  tick();
+  scrollToEl(document.querySelector('.grid'),'start');
+}
+function clearImport(){
+  imp.raw=[]; imp.data=[]; imp.preview=[]; imp.headers=[];
+  $('pasteBox').value=''; $('importStatus').textContent='';
+  $('mapBox').style.display='none'; $('previewBox').style.display='none';
+}
+
+/* --- چیپ‌های یادآوری پیش‌فرض ورود --- */
+const IMP_PRESETS=[[30,'d'],[20,'d'],[10,'d'],[7,'d'],[3,'d'],[2,'d'],[1,'d'],[12,'h'],[6,'h'],[3,'h'],[1,'h'],[30,'m'],[10,'m']];
+function renderImpPresets(){
+  $('impPresets').innerHTML=IMP_PRESETS.map(([v,u])=>{
+    const on=imp.alerts.some(a=>a.unit===u&&a.value===v);
+    return `<button class="p-chip ${on?'on':''}" data-u="${u}" data-v="${v}">${toFa(v)} ${unitFa[u]} قبل</button>`;
+  }).join('');
+  const info=$('impAlertsInfo');
+  if(info) info.innerHTML = imp.alerts.length
+    ? `✅ روی هر ردیف وارد‌شده این پیش‌یادآورها گذاشته می‌شود: <b>${imp.alerts.map(a=>alertLabel(a)).join(' + ')}</b>`
+    : '⚠️ هیچ پیش‌یادآوری انتخاب نشده — اعلان فقط <b>سرِ همان ساعت سررسید</b> می‌آید.';
+  $('impPresets').querySelectorAll('.p-chip').forEach(b=>{
+    b.addEventListener('click',()=>{
+      const u=b.dataset.u, v=+b.dataset.v;
+      const i=imp.alerts.findIndex(a=>a.unit===u&&a.value===v);
+      if(i>=0) imp.alerts.splice(i,1); else imp.alerts.push({unit:u,value:v});
+      imp.alerts.sort((a,b2)=>minutesOf(b2)-minutesOf(a));
+      renderImpPresets();
+    });
+  });
+}
+
+/* --- اتصال رویدادها --- */
+$('tabPaste').addEventListener('click',()=>{ $('pastePane').style.display='block'; $('filePane').style.display='none'; });
+$('tabFile').addEventListener('click',()=>{ $('pastePane').style.display='none'; $('filePane').style.display='block'; });
+$('parsePaste').addEventListener('click',()=>{
+  const text=$('pasteBox').value.trim();
+  if(!text){ toast('متنی نیست','از اکسل کپی و اینجا پیست کنید.','err'); return; }
+  try{ loadRows(parseDelimited(text),'چسباندن از اکسل'); }
+  catch(e){ toast('خطا در پردازش',e.message,'err'); }
+});
+async function handleFile(file){
+  if(!file) return;
+  $('importStatus').textContent='در حال خواندن فایل…';
+  try{
+    const name=(file.name||'').toLowerCase();
+    let rows;
+    if(name.endsWith('.xlsx')) rows=await readXlsx(file);
+    else if(name.endsWith('.csv')||name.endsWith('.txt')) rows=parseDelimited(await file.text());
+    else throw new Error('فقط .xlsx و .csv پشتیبانی می‌شود (برای .xls در اکسل Save As کنید).');
+    loadRows(rows, file.name);
+  }catch(e){
+    $('importStatus').textContent='';
+    toast('خواندن فایل ناموفق', e.message||'خطای نامشخص','err');
+  }
+}
+$('fileInput').addEventListener('change',e=>handleFile(e.target.files[0]));
+$('dropZone').addEventListener('click',()=>$('fileInput').click());
+['dragenter','dragover'].forEach(ev=>$('dropZone').addEventListener(ev,e=>{ e.preventDefault(); $('dropZone').classList.add('hot'); }));
+['dragleave','drop'].forEach(ev=>$('dropZone').addEventListener(ev,e=>{ e.preventDefault(); $('dropZone').classList.remove('hot'); }));
+$('dropZone').addEventListener('drop',e=>{ if(e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]); });
+$('doImport').addEventListener('click',doImport);
+$('clearImport').addEventListener('click',clearImport);
+$('downloadPreview').addEventListener('click',()=>{
+  if(!imp.preview.length){ toast('پیش‌نمایشی نیست','اول داده را وارد کنید.','err'); return; }
+  const lines=['عنوان,تاریخ شمسی,ساعت,مبلغ,دسته,وضعیت'];
+  imp.preview.forEach(p=>lines.push([p.title, p.err==='تاریخ نامعتبر'?'':jalStr(p.jy,p.jm,p.jd), p.err==='تاریخ نامعتبر'?'':pad2(p.hh)+':'+pad2(p.mm), p.amount||'', p.tag||'', p.ok?'آماده':'مشکل: '+p.err].map(x=>'"'+String(x).replace(/"/g,'""')+'"').join(',')));
+  download('yadavar-import-preview.csv', '\uFEFF'+lines.join('\r\n'), 'text/csv');
+});
+$('tplBtn').addEventListener('click',()=>{
+  const csv=['عنوان,شماره,تاریخ,ساعت,مبلغ,دسته,توضیحات',
+    'چک بانک ملت,۱۲۳۴۵۶,1405/09/20,10:30,25000000,چک,پرداخت به تامین‌کننده',
+    'ضمانت‌نامه اجرا,GN-778,1405/10/05,09:00,500000000,ضمانت‌نامه,بانک سپه — شعبه مرکزی'].join('\r\n');
+  if(download('yadavar-template.csv','\uFEFF'+csv,'text/csv'))
+    toast('قالب دانلود شد ✅','با اکسل باز کنید، ردیف‌ها را پر کنید و ذخیره کنید (CSV).','ok');
+});
+
+/* =========================================================
+   ۱۳٫۵) عیب‌یابی اعلان
+   ========================================================= */
+function inIframe(){ try{ return window.self!==window.top; }catch(e){ return true; } }
+function showWarnBar(msg){
+  const b=$('warnBar');
+  if(!msg){ b.style.display='none'; b.innerHTML=''; return; }
+  b.style.display='block';
+  b.innerHTML=msg+' <button class="btn sm ghost" id="warnGo" style="margin-inline-start:8px">راه‌حل</button>';
+  $('warnGo').onclick=()=>scrollToEl($('notifBox'));
+}
+function renderDiag(){
+  const proto=location.protocol.replace(':','');
+  const supported=('Notification' in window);
+  const perm=supported? Notification.permission : 'unsupported';
+  const secure=!!window.isSecureContext || location.hostname==='localhost' || location.hostname==='127.0.0.1';
+  const ifr=inIframe();
+  const rows=[
+    {k:'مرورگر از اعلان پشتیبانی می‌کند', v:supported?'بله':'نه', s:supported?'ok':'bad'},
+    {k:'اجازه اعلان (permission)', v: perm==='granted'?'فعال':perm==='denied'?'مسدود':(perm==='unsupported'?'نامشخص (پشتیبانی نمی‌شود)':'هنوز درخواست نشده'), s:perm==='granted'?'ok':(perm==='denied'?'bad':'mid')},
+    {k:'محیط امن (فقط http://localhost یا https)', v: secure?'بله':'نه', s:secure?'ok':'bad'},
+    {k:'پروتکل صفحه', v: proto, s: proto==='file'?'bad':'ok'},
+    {k:'پنجره مستقل (نه داخل iframe)', v: ifr?'نه':'بله', s: ifr?'bad':'ok'},
+    {k:'پنجرهٔ اعلان کنار صفحه', v: (state.settings.popToast!==false)? 'روشن ✓':'خاموش', s: (state.settings.popToast!==false)?'ok':'mid'},
+    {k:'ذخیره‌سازی دائمی', v: store.persistent?'فعال':'موقت (ممکن است پاک شود)', s: store.persistent?'ok':'mid'}
+  ];
+  $('diag').innerHTML=rows.map(r=>`<div class="d-row"><span class="k">${r.k}</span><span class="v ${r.s}">${esc(String(r.v))}</span></div>`).join('');
+
+  let hint='', ok=false;
+
+  if(bridgeOk){
+    ok=true;
+    hint='<b>✅ اعلان‌ها فعال است.</b> هنگام هر یادآوری توست ویندوز در <b>Action Center</b> ثبت می‌گردد.'+
+      (perm==='granted'
+        ? ' اعلان مرورگر هم روشن است.'
+        : ' (اعلان داخل مرورگر در حالت <code>'+proto+'</code> ممکن نیست — محدودیت کروم — ولی لازم هم نیست، چون توست ویندوز می‌آید.)')+
+      '<br>اگر توست را نمی‌بینید: <b>Focus assist / Do not disturb</b> ویندوز را خاموش کنید و Settings → System → Notifications را روشن نگه دارید. تست: دکمهٔ «🔔 تست کامل اعلان».';
+  }
+  else if(ifr){
+    hint='این صفحه داخل <b>قاب پیش‌نمایش</b> است و مرورگر در iframe اجازهٔ اعلان نمی‌دهد. فایل <code>yadavar.html</code> را دانلود کنید و در پنجرهٔ مستقل باز کنید. تا آن موقع، <b>بنر قرمز + صدا</b> کار می‌کند.';
+  }
+  else if(proto==='file'){
+    hint='<b>در حالت دابل‌کلیک (<code>file://</code>) کروم اجازهٔ اعلان سیستمی نمی‌دهد</b> — محدودیت خود مرورگر. اما بی‌خبر نمی‌مانید:'+
+      '<br>• <b>پنجرهٔ اعلان کوچک در گوشهٔ صفحه</b> + <b>بنر قرمز تمام‌عرض</b> + <b>بوق تکرارشونده</b> + <b>چشمک عنوان</b>.'+
+      '<br>• اگر پنجرهٔ اعلان باز نشد، یعنی مرورگر پاپ‌آپ را مسدود کرده: آیکن کوچک مسدودکنندهٔ پاپ‌آپ در نوار آدرس را بزنید و «Always allow» را انتخاب کنید، بعد یک‌بار «🔔 تست کامل اعلان» را بزنید.'+
+      '<br>• <b>ایمیل و یادآوری ابری</b> هم کار می‌کند (بخش «همگام‌سازی خودکار ابری») — حتی وقتی سیستم خاموش است.'+
+      '<br>فقط اگر اعلان رسمی ویندوز (Action Center) را می‌خواهید: همین یک فایل را در <b>Netlify Drop</b> یا <b>GitHub Pages</b> بگذارید و از آدرس https باز کنید.';
+  }
+  else if(!supported){
+    hint='این مرورگر از Notification API پشتیبانی نمی‌کند. از <b>Chrome</b> یا <b>Edge</b> استفاده کنید.';
+  }
+  else if(perm==='denied'){
+    hint='اجازهٔ اعلان برای این صفحه <b>مسدود</b> شده است. در کروم: آیکن قفل کنار آدرس ← Notifications ← Allow ← رفرش. (یا Settings → Privacy and security → Site settings → Notifications)';
+  }
+  else if(perm==='default'){
+    hint='<b>یک قدم مانده:</b> اعلان سیستم اجازه نگرفته است. دکمهٔ زیر را بزنید و در پنجرهٔ مرورگر <b>Allow</b> را انتخاب کنید.'+
+      '<br><button class="btn sm" id="reqPerm" style="margin-top:8px">🔔 اجازهٔ اعلان</button>';
+  }
+  else if(!secure){
+    hint='صفحه در محیط ناامن باز شده؛ برای اعلان باید از <code>http://localhost</code> یا <code>https://</code> استفاده کنید.';
+  }
+  else {
+    ok=true;
+    hint='<b>✅ اعلان‌ها فعال است.</b> هنگام هر یادآوری، اعلان در گوشهٔ ویندوز (Action Center) ظاهر می‌شود و بنر قرمز داخل صفحه هم می‌آید.';
+  }
+
+
+  const box=$('fixHint'); box.className='fixbox'+(ok?' ok':''); box.innerHTML=hint;
+  const rp=$('reqPerm'); if(rp) rp.onclick=()=>toggleNotifs();
+
+  if(bridgeOk || (perm==='granted' && !ifr)){
+    showWarnBar('');
+  } else if(ifr){
+    showWarnBar('⚠️ داخل پیش‌نمایش، اعلان مرورگر ممکن نیست. فایل را در پنجرهٔ مستقل باز کنید. تا آن موقع بنر قرمز + صدا کار می‌کند.');
+  } else if(proto==='file'){
+    showWarnBar('ℹ️ در حالت دابل‌کلیک (<code>file://</code>) کروم اعلان مرورگر را نمی‌دهد. اما <b>بنر قرمز + صدا + چشمک عنوان + ایمیل/ابر</b> کار می‌کنند.');
+  } else {
+    showWarnBar('ℹ️ برای اعلان مرورگر، یک‌بار چیپ «اعلان سیستم» را بزنید و Allow بدهید.');
+  }
+  return {supported, perm, secure, ifr, ok, bridgeOk};
+}
+$('recheck').addEventListener('click',renderDiag);
+$('testNotif').addEventListener('click',async()=>{
+  let d=renderDiag();
+  const target=new Date(Date.now()+45000);
+  const rem={title:'تست اعلان', note:'اگر این را می‌بینید، همه‌چیز درست است.', jy:nj.jy, jm:nj.jm, jd:nj.jd,
+             hh:target.getHours(), mm:target.getMinutes(), email:false};
+  if(d.supported && Notification.permission!=='granted'){
+    try{ await Notification.requestPermission(); }catch(e){}
+    d=renderDiag();
+  }
+  const sysOk=notify('⏰ تست اعلان','این یک اعلان آزمایشی است.');
+  const popOk=popToast('⏰ تست اعلان','این پنجرهٔ اعلان کنار صفحه است — اگر آن را می‌بینید، یادآورها هم همین‌طور نمایش داده می‌شوند ✅');
+  showAlarmBar('تست اعلان',
+    `اعلان مرورگر: ${sysOk?'✓ فعال':'✗ مسدود'} — پنجرهٔ اعلان: ${popOk?'✓ باز شد':'✗ مسدود'} — بنر قرمز + صدا: ✓ همیشه`,
+    rem, {unit:'m',value:0});
+  flashTitle('تست اعلان'); beep(); startAlarmLoop();
+  logIt(`تست اعلان — مرورگر: ${sysOk?'✓':'✗'} | پنجرهٔ اعلان: ${popOk?'✓':'✗'} (مسدودشده توسط مرورگر)`,'');
+  toast(sysOk||popOk? 'اعلان تست ارسال شد ✅':'اعلان تست: بنر و صدا',
+    `مرورگر: ${sysOk?'✓':'✗'} · پنجرهٔ اعلان: ${popOk?'✓':'✗'} · بنر: ✓`, (sysOk||popOk)?'ok':'err');
+  renderDiag();
+});
+
+/* =========================================================
+   ۱۳٫۸) حالت تک‌فایلی: داده داخل خودِ فایل + همگام‌سازی ابری
+   ========================================================= */
+var fileHandle=null, dirty=false, dirtyTimer=null;
+
+function idbOp(mode,val){
+  return new Promise(res=>{
+    try{
+      let done=false, fin=v=>{ if(!done){ done=true; res(v); } };
+      const rq=indexedDB.open('yadavar',1);
+      rq.onupgradeneeded=()=>{ try{ rq.result.createObjectStore('kv'); }catch(e){} };
+      rq.onerror=()=>fin(null);
+      rq.onsuccess=()=>{
+        try{
+          const db=rq.result, tx=db.transaction('kv','readwrite'), st=tx.objectStore('kv');
+          if(mode==='set'){ st.put(val,'fileHandle'); tx.oncomplete=()=>fin(true); tx.onerror=()=>fin(null); }
+          else { const g=st.get('fileHandle'); g.onsuccess=()=>fin(g.result||null); g.onerror=()=>fin(null); }
+        }catch(e){ fin(null); }
+      };
+      setTimeout(()=>fin(null),4000);
+    }catch(e){ res(null); }
+  });
+}
+function payloadNow(){
+  return {app:'yadavar', version:2, updatedAt: Date.now(),
+    reminders:state.reminders, settings:state.settings, fired:state.fired, logs:state.logs.slice(0,20)};
+}
+function buildSelfContainedHTML(){
+  const json=JSON.stringify(payloadNow())
+    .replace(/</g,'\\u003c').replace(/\u2028/g,'\\u2028').replace(/\u2029/g,'\\u2029');
+  return PRISTINE_HTML.replace(/<script id="ydData"[\s\S]*?<\/script>/,
+    '<script id="ydData" type="application/json">'+json+'<'+'/script>');
+}
+function updateSaveChip(){
+  const c=$('saveChip'); if(!c) return;
+  if(ONLINE){
+    if(dirty){ c.innerHTML='<span class="dot"></span> ذخیرهٔ خودکار…'; c.className='chip'; c.title='در حال ذخیره در همین مرورگر'; }
+    else { c.innerHTML='<span class="dot"></span> ☁️ ذخیرهٔ خودکار'; c.className='chip ok';
+           c.title='حالت آنلاین: هر تغییر خودکار در همین مرورگر ذخیره می‌شود'; }
+    return;
+  }
+  if(dirty){ c.innerHTML='<span class="dot"></span> ذخیره نشده'; c.className='chip bad'; c.title='تغییرات ذخیره نشده — کلیک کنید'; }
+  else if(fileHandle){ c.innerHTML='<span class="dot"></span> ذخیره شد ✓'; c.className='chip ok'; c.title='متصل به فایل — ذخیرهٔ خودکار'; }
+  else { c.innerHTML='<span class="dot"></span> 💾 ذخیره در فایل'; c.className='chip'; c.title='همه‌چیز را داخل خودِ فایل ذخیره کن'; }
+}
+async function writeToFile(){
+  if(!fileHandle) return false;
+  try{
+    const w=await fileHandle.createWritable();
+    await w.write(buildSelfContainedHTML());
+    await w.close();
+    dirty=false; updateSaveChip(); return true;
+  }catch(e){ updateSaveChip(); return false; }
+}
+function downloadSelfFile(){
+  const ok=download('yadavar.html', buildSelfContainedHTML(), 'text/html');
+  if(ok){
+    dirty=false; updateSaveChip();
+    toast('نسخهٔ تک‌فایله ذخیره شد ✅','فایل yadavar.html در پوشهٔ Downloads است — همان را جای فایل قبلی بگذارید و با خودتان ببرید.','ok');
+    logIt('نسخهٔ تک‌فایله ذخیره شد','ok');
+  } else toast('ذخیره نشد','این مرورگر اجازهٔ دانلود نمی‌دهد.','err');
+  return ok;
+}
+async function connectFileHandle(){
+  if(typeof window.showSaveFilePicker!=='function'){
+    toast('این مرورگر ذخیرهٔ خودکار ندارد','با دکمهٔ 💾 نسخهٔ جدید را دانلود کنید (روی همهٔ دستگاه‌ها، از جمله اندروید، کار می‌کند).','err');
+    return downloadSelfFile();
+  }
+  try{
+    fileHandle=await window.showSaveFilePicker({suggestedName:'yadavar.html',
+      types:[{description:'Yadavar app', accept:{'text/html':['.html']}}]});
+    await idbOp('set',fileHandle);
+    const ok=await writeToFile();
+    if(ok){ toast('اتصال به فایل انجام شد ✅','از این پس هر تغییر (تمدید، افزودن، حذف) خودکار داخل همان فایل ذخیره می‌شود.','ok'); logIt('اتصال خودکار به فایل برقرار شد','ok'); }
+    updateSaveChip(); return ok;
+  }catch(e){ if(e && e.name!=='AbortError') toast('اتصال انجام نشد', String(e.message||e),'err'); return false; }
+}
+async function reconnectStoredHandle(){
+  try{
+    const h=await idbOp('get'); if(!h) return;
+    fileHandle=h;
+    try{
+      const p=await h.queryPermission({mode:'readwrite'});
+      if(p!=='granted'){ toast('برای ذخیرهٔ خودکار','یک‌بار روی چیپ «ذخیره» بزنید و اجازه بدهید.',''); }
+    }catch(e){}
+    updateSaveChip();
+  }catch(e){}
+}
+function markDirty(){
+  dirty=true; updateSaveChip();
+  clearTimeout(dirtyTimer);
+  dirtyTimer=setTimeout(async()=>{
+    if(fileHandle) await writeToFile();
+    else if(ONLINE){ dirty=false; updateSaveChip(); }
+    pushCloud();
+  }, 1400);
+}
+/* ---------- همگام‌سازی ابری ---------- */
+function cloudStatus(t){ const el=$('cloudStatus'); if(el) el.textContent=t||''; }
+function reminderPayloadForCloud(){
+  return state.reminders.filter(r=>!r.done).map(r=>({
+    id:r.id, title:r.title, note:r.note||'',
+    when:new Date(tsOf(r)).toISOString(),
+    whenFa:jalFull(r.jy,r.jm,r.jd)+' ساعت '+pad2(r.hh)+':'+pad2(r.mm),
+    alerts:(r.alerts||[]).map(a=>({label:alertLabel(a), minutes:minutesOf(a)}))
+  }));
+}
+async function pushCloud(){
+  const url=(state.settings.cloudUrl||'').trim();
+  if(!url || state.settings.cloudAuto===false) return false;
+  try{
+    await fetch(url,{method:'POST', mode:'no-cors',
+      headers:{'Content-Type':'text/plain;charset=UTF-8'},
+      body:JSON.stringify({app:'yadavar', updatedAt:Date.now(), reminders:reminderPayloadForCloud()})});
+    cloudStatus('آخرین همگام‌سازی: '+toFa(pad2(new Date().getHours()))+':'+toFa(pad2(new Date().getMinutes()))+' ✓ — ایمیل‌ها از همین داده‌ها ارسال می‌شوند');
+    return true;
+  }catch(e){
+    cloudStatus('همگام‌سازی ناموفق — آدرس Web App و اینترنت را بررسی کنید');
+    return false;
+  }
+}
+/* ---------- بارگذاری داده‌های داخل فایل ---------- */
+function adoptEmbedded(){
+  try{
+    const raw=($('ydData').textContent||'').trim();
+    if(!raw || raw==='{}') return false;
+    const d=JSON.parse(raw);
+    if(!d || !d.updatedAt) return false;
+    const local=state.updatedAt||0;
+    if(!Array.isArray(d.reminders) || !d.reminders.length) return false;
+    if(d.updatedAt<=local) return false;
+    state.reminders=d.reminders;
+    if(d.settings) state.settings=Object.assign(state.settings,d.settings);
+    if(d.fired) state.fired=d.fired;
+    state.updatedAt=d.updatedAt;
+    saveAll({silent:true});
+    setTimeout(()=>toast('داده‌های داخل فایل بارگذاری شد 📦',
+      toFa(d.reminders.length)+' یادآور از خودِ فایل خوانده شد.','ok'),500);
+    return true;
+  }catch(e){ return false; }
+}
+
+/* =========================================================
+   ۱۳٫۹) اتصال دکمه‌های نمایش، اندازه و ذخیره
+   ========================================================= */
+$('viewBtn').addEventListener('click',()=>{
+  state.settings.view = state.settings.view==='table'? 'card':'table';
+  saveAll(); applyViewSettings(); renderList();
+});
+$('fsUp').addEventListener('click',()=>{
+  state.settings.fontSize=Math.min(4,(state.settings.fontSize||2)+1); saveAll(); applyViewSettings();
+});
+$('fsDown').addEventListener('click',()=>{
+  state.settings.fontSize=Math.max(1,(state.settings.fontSize||2)-1); saveAll(); applyViewSettings();
+});
+$('saveChip').addEventListener('click',async()=>{
+  if(ONLINE && !fileHandle){
+    toast('حالت آنلاین ✅','همه‌چیز خودکار در همین مرورگر ذخیره می‌شود. برای پشتیبان، دکمهٔ «⬇️ پشتیبان‌گیری (JSON)» را بزنید.','ok');
+    logIt('حالت آنلاین — ذخیرهٔ خودکار در مرورگر','ok');
+    return;
+  }
+  if(fileHandle){
+    const ok=await writeToFile();
+    toast(ok? 'ذخیره شد ✅':'ذخیره نشد', ok? 'داخل همان فایل ذخیره شد.':'اجازهٔ نوشتن در فایل را بدهید.', ok?'ok':'err');
+    return;
+  }
+  if(typeof window.showSaveFilePicker==='function'){
+    const auto=confirm('ذخیرهٔ خودکار را فعال کنیم؟\n\nتأیید = انتخاب فایل؛ از این پس هر تغییر خودکار داخل همان فایل ذخیره می‌شود.\nلغو = فقط یک نسخهٔ جدید دانلود می‌شود.');
+    if(auto){ await connectFileHandle(); return; }
+  }
+  downloadSelfFile();
+});
+$('saveCloud').addEventListener('click',()=>{
+  state.settings.cloudUrl=$('cloudUrl').value.trim();
+  saveAll({silent:true});
+  if(state.settings.cloudUrl){ cloudStatus('در حال ارسال داده‌ها…'); pushCloud(); }
+  else cloudStatus('آدرس ابری حذف شد (همگام‌سازی خاموش).');
+});
+$('testCloud').addEventListener('click',async()=>{
+  state.settings.cloudUrl=$('cloudUrl').value.trim(); saveAll({silent:true});
+  if(!state.settings.cloudUrl){ toast('آدرس خالی است','آدرس Web App گوگل را وارد کنید.','err'); return; }
+  const ok=await pushCloud();
+  toast(ok? 'ارسال شد ✅':'ارسال ناموفق', ok? 'داده‌های فعلی به اسکریپت گوگل رفتند.':'آدرس Web App و اینترنت را بررسی کنید.', ok?'ok':'err');
+});
+window.addEventListener('beforeunload',e=>{
+  if(dirty){ e.preventDefault(); e.returnValue=''; }
+});
+$('selAll').addEventListener('change',()=>{
+  const boxes=[...document.querySelectorAll('#list [data-sel]')];
+  if($('selAll').checked) boxes.forEach(b=>{ b.checked=true; sel.add(b.dataset.sel); });
+  else boxes.forEach(b=>{ b.checked=false; sel.delete(b.dataset.sel); });
+  updateSelCount();
+});
+$('delSel').addEventListener('click',()=>deleteIds([...sel],'حذف انتخاب‌شده‌ها'));
+$('bulkAlerts').addEventListener('click',()=>openAlertEditor([...sel]));
+$('delDone').addEventListener('click',()=>{
+  const ids=state.reminders.filter(r=>r.done).map(r=>r.id);
+  if(!ids.length){ toast('یادآور انجام‌شده‌ای نیست','','err'); return; }
+  deleteIds(ids,'حذف انجام‌شده‌ها');
+});
+$('delAll').addEventListener('click',()=>{
+  const ids=state.reminders.map(r=>r.id);
+  if(!ids.length){ toast('لیست خالی است','','err'); return; }
+  deleteIds(ids,'حذف همه‌ی یادآورها');
+});
+
+/* دسترسی برای عیب‌یابی و تست */
+window.__yd={state:state, imp:imp, parseDateCell:parseDateCell, parseDelimited:parseDelimited,
+             readXlsx:readXlsx, toJ:toJ, toG:toG, buildICS:buildICS, buildGAS:buildGAS,
+             buildSelfContainedHTML:buildSelfContainedHTML, pushCloud:pushCloud,
+             alertsOf:alertsOf, alertLabel:alertLabel, minutesOf:minutesOf, tick:tick, popToast:popToast,
+             renderList:renderList, openDetail:openDetail, fire:fire, tsOf:tsOf};
+
+/* =========================================================
+   ۱۴) راه‌اندازی
+   ========================================================= */
+adoptEmbedded();
+$('verBadge').textContent=APP_VERSION;
+$('verBadge').title='نسخهٔ برنامه — برای به‌روزرسانی، فایل تازه را بگیرید و داده‌ها را با «بازگردانی» منتقل کنید';
+fillSelect($('hh'),0,23,form.hh);
+fillSelect($('mm'),0,59,form.mm);
+fillSelect($('impHh'),0,23,9);
+fillSelect($('impMm'),0,59,0);
+renderImpPresets();
+$('searchBox').addEventListener('input',renderList);
+$('filterSel').addEventListener('change',renderList);
+renderCal(); renderPresets(); renderCustChips(); updateSelLine(); renderList(); renderLog();
+refreshNotifChip(); refreshEmailChip(); renderNextInfo();
+$('optBrowser').checked=!!state.settings.browserNotif;
+$('optBrowser').addEventListener('change',()=>{
+  state.settings.browserNotif=$('optBrowser').checked; saveAll();
+  if(state.settings.browserNotif && Notification.permission!=='granted') toggleNotifs();
+});
+if($('optPop')){
+  $('optPop').checked = state.settings.popToast!==false;
+  $('optPop').addEventListener('change',()=>{ state.settings.popToast=$('optPop').checked; saveAll(); });
+}
+
+renderBridgeChip(); renderDiag(); updateSaveChip(); reconnectStoredHandle();
+bridgePing().then(()=>{ renderDiag(); refreshNotifChip(); });
+if(state.settings.cloudUrl) setTimeout(()=>pushCloud(), 3000);
+setInterval(()=>bridgePing().then(()=>{ renderDiag(); }), 45000);
+/* قفل PIN: اتصال دکمه‌ها و پرسیدن PIN در شروع */
+if($('pinSave')) $('pinSave').addEventListener('click',()=>{
+  const v=($('pinInput').value||'').trim();
+  if(!/^[0-9]{4,8}$/.test(v)){ toast('PIN نامعتبر','۴ تا ۸ رقم انگلیسی وارد کنید.','err'); return; }
+  state.settings.pin=pinHash(v); saveAll();
+  $('pinInput').value=''; renderPinStatus();
+  toast('قفل روشن شد ✅','از این پس هنگام باز شدن صفحه PIN پرسیده می‌شود.','ok');
+  logIt('قفل PIN روشن شد','ok');
+});
+if($('pinClear')) $('pinClear').addEventListener('click',()=>{
+  if(!state.settings.pin){ toast('قفلی روشن نیست','',''); return; }
+  if(!confirm('قفل PIN حذف شود؟')) return;
+  state.settings.pin=''; saveAll(); renderPinStatus();
+  try{ sessionStorage.removeItem('yd_unlocked'); }catch(e){}
+  toast('قفل حذف شد','','ok');
+});
+if($('lkGo')) $('lkGo').addEventListener('click',tryUnlock);
+if($('lkPin')) $('lkPin').addEventListener('keydown',e=>{ if(e.key==='Enter') tryUnlock(); });
+if($('lkForgot')) $('lkForgot').addEventListener('click',()=>{
+  if(!confirm('قفل باز شود؟ (داده‌ها پاک نمی‌شوند، فقط قفل برداشته می‌شود)')) return;
+  if(!confirm('مطمئنید؟ بعد از باز شدن، دوباره می‌توانید PIN بگذارید.')) return;
+  state.settings.pin=''; saveAll(); renderPinStatus(); unlockNow();
+  toast('قفل برداشته شد','حالا از بخش «🔒 قفل با PIN» می‌توانید PIN تازه بگذارید.','');
+});
+renderPinStatus();
+try{
+  if(state.settings.pin && sessionStorage.getItem('yd_unlocked')!=='1') lockNow();
+}catch(e){ if(state.settings.pin) lockNow(); }
+
+if(ONLINE){
+  const askPermOnce=async()=>{
+    document.removeEventListener('pointerdown',askPermOnce,true);
+    try{
+      if('Notification' in window && Notification.permission==='default'){
+        const p=await Notification.requestPermission();
+        refreshNotifChip(); renderDiag();
+        if(p==='granted') notify('اعلان‌ها فعال شد ✅','از این پس یادآورها در گوشهٔ ویندوز/اندروید نمایش داده می‌شوند.');
+      }
+    }catch(e){}
+  };
+  document.addEventListener('pointerdown',askPermOnce,true);
+}
+if(ONLINE){ const ob=$('onlineBar'); if(ob) ob.style.display='block';
+  const oh=$('onlineHelp'); if(oh) oh.onclick=openHelp; }
+$('todayLine').textContent='امروز: '+jalFull(nj.jy,nj.jm,nj.jd)+' ('+now.getFullYear()+'-'+pad2(now.getMonth()+1)+'-'+pad2(now.getDate())+')';
+if(!store.persistent){
+  setTimeout(()=>{
+    toast('این مرورگر ذخیرهٔ دائمی ندارد ⚠️',
+      'بعد از هر تغییر، دکمهٔ «💾 ذخیره» را بزنید تا همه‌چیز داخل خودِ فایل ذخیره شود.','err');
+    showWarnBar('⚠️ این مرورگر اجازهٔ ذخیره‌سازی دائمی نمی‌دهد (مثلاً فایل روی اندروید). نگران نباشید: با دکمهٔ <code>💾 ذخیره</code> همه‌چیز داخل خودِ فایل نوشته می‌شود و هر جا ببرید همان داده‌ها هست.');
+  }, 1200);
+}
+
+tick(); setInterval(tick, 20000);
+document.addEventListener('visibilitychange',()=>{ if(!document.hidden){ tick(); stopFlash(); } });
+window.addEventListener('focus', ()=>{ tick(); stopFlash(); });
+</script>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a56b25560c8f1936',t:'MTc5NDA0MjAwOA=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a56b25560c8f1936',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
